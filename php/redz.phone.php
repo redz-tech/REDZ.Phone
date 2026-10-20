@@ -25,7 +25,7 @@ spl_autoload_register(static function (string $class): void {
 	}
 });
 
-const REDZ_PHONE_VERSION = '0.3.1';
+const REDZ_PHONE_VERSION = '0.4.0';
 const REDZ_PHONE_MAX_INPUT = 256;
 const REDZ_PHONE_MAX_DIGITS = 24;
 const REDZ_PHONE_TYPES = ['FIXED_LINE', 'MOBILE', 'FIXED_LINE_OR_MOBILE', 'TOLL_FREE', 'PREMIUM_RATE', 'SHARED_COST', 'VOIP', 'PERSONAL_NUMBER', 'PAGER', 'UAN', 'VOICEMAIL'];

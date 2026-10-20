@@ -1,4 +1,4 @@
-/*! REDZ.Phone 0.3.1 | MIT | metadata: Google libphonenumber v9.0.41 (Apache-2.0) | engine: libphonenumber-js (MIT) | icons: Bootstrap Icons (MIT), Simple Icons (CC0) | see NOTICE */
+/*! REDZ.Phone 0.4.0 | MIT | metadata: Google libphonenumber v9.0.41 (Apache-2.0) | engine: libphonenumber-js (MIT) | icons: Bootstrap Icons (MIT), Simple Icons (CC0) | see NOTICE */
 var REDZ = REDZ || {};
 REDZ.Phone = (() => {
   var __defProp = Object.defineProperty;
@@ -2283,7 +2283,7 @@ REDZ.Phone = (() => {
   var TYPES = ["FIXED_LINE", "MOBILE", "FIXED_LINE_OR_MOBILE", "TOLL_FREE", "PREMIUM_RATE", "SHARED_COST", "VOIP", "PERSONAL_NUMBER", "PAGER", "UAN", "VOICEMAIL"];
   var DIGIT_ZEROS = [48, 1632, 1776, 1984, 2406, 2534, 2662, 2790, 2918, 3046, 3174, 3302, 3430, 3558, 3664, 3792, 3872, 4160, 4240, 6112, 6160, 6470, 6608, 6784, 6800, 6992, 7088, 7232, 7248, 42528, 43216, 43264, 43472, 43504, 43600, 44016, 65296, 66720, 68912, 68928, 69734, 69872, 69942, 70096, 70384, 70736, 70864, 71248, 71360, 71376, 71386, 71472, 71904, 72016, 72688, 72784, 73040, 73120, 73184, 73552, 90416, 92768, 92864, 93008, 93552, 118e3, 120782, 120792, 120802, 120812, 120822, 123200, 123632, 124144, 124401, 125264, 130032];
   var SCRIPT = typeof document !== "undefined" && document.currentScript ? document.currentScript.src : "";
-  var version = "0.3.1";
+  var version = "0.4.0";
   var google = "v9.0.41";
   var meta = null;
   var loading = null;
@@ -2562,7 +2562,7 @@ REDZ.Phone = (() => {
     const button = el("button", "rzp-country", { type: "button", "aria-haspopup": "listbox", "aria-expanded": "false", "aria-controls": `${id}-list` });
     const flag = el("span", "rzp-flag", { "aria-hidden": "true" });
     const dial = el("span", "rzp-code", { dir: "ltr" });
-    button.append(flag, dial, el("span", "rzp-caret", { "aria-hidden": "true" }));
+    button.append(flag, globe(), el("span", "rzp-word", { "aria-hidden": "true" }, t.country), dial, el("span", "rzp-caret", { "aria-hidden": "true" }));
     const panel = el("div", "rzp-list", { id: `${id}-list`, hidden: "" });
     const search = el("input", "rzp-search", { type: "text", role: "combobox", "aria-expanded": "true", "aria-autocomplete": "list", "aria-controls": `${id}-options`, "aria-label": t.search, placeholder: t.search, autocomplete: "off", autocapitalize: "off", spellcheck: "false" });
     const listbox = el("ul", "rzp-options", { id: `${id}-options`, role: "listbox", "aria-label": t.countries });
@@ -2684,6 +2684,8 @@ REDZ.Phone = (() => {
       root.classList.toggle("is-off", st.off);
       const s = shown();
       paint(flag, s.iso);
+      button.classList.toggle("is-none", s.iso === NONE);
+      button.classList.toggle("is-blank", s.iso === NONE && !s.code);
       dial.textContent = s.code ? `+${s.code}` : "";
       button.setAttribute("aria-label", s.iso !== NONE ? `${t.country}: ${nameOf(s.iso)}${s.code ? ` +${s.code}` : ""}` : s.code ? `+${s.code}` : t.choose);
       if (o.placeholder && ready() && !st.off) {
@@ -3039,6 +3041,22 @@ REDZ.Phone = (() => {
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
     path.setAttribute("d", d);
     svg.append(path);
+    return svg;
+  }
+  function globe() {
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("class", "rzp-globe");
+    svg.setAttribute("viewBox", "0 0 20 20");
+    svg.setAttribute("aria-hidden", "true");
+    svg.setAttribute("focusable", "false");
+    const shapes = [["circle", { cx: 10, cy: 10, r: 7.6 }], ["ellipse", { cx: 10, cy: 10, rx: 3.2, ry: 7.6 }], ["path", { d: "M2.6 7.6h14.8M2.6 12.4h14.8" }]];
+    for (const [tag, attrs] of shapes) {
+      const shape = document.createElementNS("http://www.w3.org/2000/svg", tag);
+      for (const [k, v] of Object.entries(attrs)) {
+        shape.setAttribute(k, String(v));
+      }
+      svg.append(shape);
+    }
     return svg;
   }
   function fill(text, values = {}) {

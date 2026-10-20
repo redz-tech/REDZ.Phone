@@ -13,7 +13,7 @@ REDZ_Phone_Parse($_POST['phone'], $_POST['phone_country'], ['MOBILE'])['e164']; 
 **Demo:** <https://redz-tech.github.io/REDZ.Phone/> (English, Русский, ไทย, עברית, 中文). In code: `REDZ.Phone` in the
 browser, functions `REDZ_Phone_*` in PHP.
 
-> **Status: 0.3.1, the engine and the field.** Offline checks only, no network. Coming next: an optional paid check
+> **Status: 0.4.0, the engine and the field.** Offline checks only, no network. Coming next: an optional paid check
 > that the number really works in the contact method the person chose (call, WhatsApp, Telegram). See `changelog.md`.
 
 ---
@@ -87,8 +87,8 @@ To use it, copy `dist/` (browser) and `php/` (server). Nothing else is needed at
 </script>
 ```
 
-`REDZ.Phone.field(input, options)` wraps an existing `<input>`. It puts a country button (flag, calling code) over the
-start of the input, a line under it for the number read back or the problem, and optionally a choice of contact
+`REDZ.Phone.field(input, options)` wraps an existing `<input>`. It puts a country button (flag and calling code; a globe
+and the word "Country" until there is a country) over the start of the input, a line under it for the number read back or the problem, and optionally a choice of contact
 method. The input stays the site's own: its classes, name and value are untouched, and nothing reformats the
 number while it is typed (input masks break pasting).
 
@@ -163,7 +163,7 @@ international format, `{example}` the country's example number.
 
 | Key | Default |
 |---|---|
-| `country` | `Country` (the button's label: "Country: United Kingdom +44") |
+| `country` | `Country` (on the button until a country is chosen; its label: "Country: United Kingdom +44") |
 | `choose` | `Choose a country` |
 | `search` | `Country or code` |
 | `countries` | `Countries` (the list's label) |

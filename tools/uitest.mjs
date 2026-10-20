@@ -496,6 +496,32 @@ test('browser language: only a language with a region picks the country', async 
 	expect('no country asks for one', (await p.note()).text === 'Choose a country or start the number with +', await p.note());
 });
 
+test('no country yet: the button shows a globe and the word', async (p, expect) => {
+	const look = () => p.ev(`new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(() => {
+		const b = document.querySelector('.rzp-country'), seen = (s) => getComputedStyle(b.querySelector(s)).display !== 'none';
+		done({flag: seen('.rzp-flag'), globe: seen('.rzp-globe'), word: seen('.rzp-word') ? b.querySelector('.rzp-word').textContent : '', code: b.querySelector('.rzp-code').textContent,
+			fits: Math.abs(parseFloat(document.getElementById('phone').style.paddingLeft) - b.offsetWidth) < 1});
+	})))`);
+	await p.mount({country: ''});
+	let l = await look();
+	expect('globe and "Country", no flag', !l.flag && l.globe && l.word === 'Country' && l.code === '', l);
+	expect('the number starts after the button', l.fits, l);
+	await p.focus('#phone');
+	await p.type('+800 1234 5678');
+	l = await look();
+	expect('a number of no country: globe and its code, no word', !l.flag && l.globe && l.word === '' && l.code === '+800', l);
+	await p.mount({country: ''});
+	await p.click('.rzp-country');
+	await p.type('thai');
+	await p.key('Enter');
+	l = await look();
+	expect('a chosen country: flag and code', l.flag && !l.globe && l.word === '' && l.code === '+66', l);
+	expect('the number moves with the narrower button', l.fits, l);
+	await p.mount({country: '', texts: {country: 'Страна'}});
+	l = await look();
+	expect('the word comes from texts.country', l.word === 'Страна', l);
+});
+
 test('touch: tap the button, tap a country, tap a method', async (p, expect) => {
 	await p.send('Emulation.setDeviceMetricsOverride', {width: 390, height: 844, deviceScaleFactor: 2, mobile: true});
 	await p.send('Emulation.setTouchEmulationEnabled', {enabled: true, maxTouchPoints: 5});

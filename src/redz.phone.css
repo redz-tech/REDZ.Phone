@@ -68,6 +68,29 @@
 .rzp-code {
 	font-variant-numeric: tabular-nums;
 }
+.rzp-globe {
+	flex: none;
+	display: none;
+	width: 18px;
+	height: 18px;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 1.5;
+	opacity: .75;
+}
+.rzp-word {
+	display: none;
+	white-space: nowrap;
+}
+.rzp-country.is-none .rzp-flag {
+	display: none;
+}
+.rzp-country.is-none .rzp-globe {
+	display: block;
+}
+.rzp-country.is-blank .rzp-word {
+	display: inline;
+}
 .rzp-caret {
 	width: 0;
 	height: 0;

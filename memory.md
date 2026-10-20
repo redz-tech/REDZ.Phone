@@ -65,6 +65,9 @@ A field enters the answer only if both engines can produce it identically.
 - **No reformatting while typing.** Masks fight pasting and caret movement on mobile keyboards (GOV.UK, Baymard);
   the read-back line under the input gives the same reassurance and shows the country, which is what catches a
   wrong default country.
+- **No country = a globe and the word `texts.country`, never a blank flag** (owner, 2026-10-21: the empty white
+  flag did not read as something to press). The word goes once a code is typed; the input's padding follows the
+  button's width through the ResizeObserver.
 - **The flag shows the country the number will be read with.** It follows a typed `+code` (also unfinished:
   `+7` → RU), a valid number's own region, and only then the pick. A pick that conflicts with a typed `+code`
   removes the code; otherwise the typed code would flip the flag straight back.

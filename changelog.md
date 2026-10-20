@@ -3,6 +3,13 @@
 All notable changes to **REDZ.Phone**. Versions are its own and independent of any host application.
 Listed newest → oldest.
 
+## 0.4.0 — The country button says what it is for
+- **No country yet:** the button shows a globe and the word "Country" instead of a blank flag, which people did not
+  take for something to press. The word is `texts.country`, so a page in another language shows its own word.
+- **A number of no country** (+800, +882…) shows the globe with its code.
+- New classes for theming: `rzp-globe`, `rzp-word`; the button gets `is-none` (no country) and `is-blank` (no
+  country and no code).
+
 ## 0.3.1 — A clean inspection list
 - **No behaviour change.** The sources pass PhpStorm's inspections: two needless escapes in a regular expression,
   attribute values turned into strings explicitly, a needless cast in `REDZ_Phone_Normalize`.

@@ -79,7 +79,7 @@ export function field(input, options = {}) {
 	const button = el('button', 'rzp-country', {type: 'button', 'aria-haspopup': 'listbox', 'aria-expanded': 'false', 'aria-controls': `${id}-list`});
 	const flag = el('span', 'rzp-flag', {'aria-hidden': 'true'});
 	const dial = el('span', 'rzp-code', {dir: 'ltr'});
-	button.append(flag, dial, el('span', 'rzp-caret', {'aria-hidden': 'true'}));
+	button.append(flag, globe(), el('span', 'rzp-word', {'aria-hidden': 'true'}, t.country), dial, el('span', 'rzp-caret', {'aria-hidden': 'true'}));
 	const panel = el('div', 'rzp-list', {id: `${id}-list`, hidden: ''});
 	const search = el('input', 'rzp-search', {type: 'text', role: 'combobox', 'aria-expanded': 'true', 'aria-autocomplete': 'list', 'aria-controls': `${id}-options`, 'aria-label': t.search, placeholder: t.search, autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false'});
 	const listbox = el('ul', 'rzp-options', {id: `${id}-options`, role: 'listbox', 'aria-label': t.countries});
@@ -213,6 +213,8 @@ export function field(input, options = {}) {
 		root.classList.toggle('is-off', st.off);
 		const s = shown();
 		paint(flag, s.iso);
+		button.classList.toggle('is-none', s.iso === NONE);
+		button.classList.toggle('is-blank', s.iso === NONE && !s.code);
 		dial.textContent = s.code ? `+${s.code}` : '';
 		button.setAttribute('aria-label', s.iso !== NONE ? `${t.country}: ${nameOf(s.iso)}${s.code ? ` +${s.code}` : ''}` : (s.code ? `+${s.code}` : t.choose));
 		if (o.placeholder && ready() && !st.off) {
@@ -581,6 +583,24 @@ function icon(method) {
 	const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 	path.setAttribute('d', d);
 	svg.append(path);
+	return svg;
+}
+
+// The button's mark while no country is chosen: an outline globe, drawn in the text colour.
+function globe() {
+	const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+	svg.setAttribute('class', 'rzp-globe');
+	svg.setAttribute('viewBox', '0 0 20 20');
+	svg.setAttribute('aria-hidden', 'true');
+	svg.setAttribute('focusable', 'false');
+	const shapes = [['circle', {cx: 10, cy: 10, r: 7.6}], ['ellipse', {cx: 10, cy: 10, rx: 3.2, ry: 7.6}], ['path', {d: 'M2.6 7.6h14.8M2.6 12.4h14.8'}]];
+	for (const [tag, attrs] of shapes) {
+		const shape = document.createElementNS('http://www.w3.org/2000/svg', tag);
+		for (const [k, v] of Object.entries(attrs)) {
+			shape.setAttribute(k, String(v));
+		}
+		svg.append(shape);
+	}
 	return svg;
 }
 
