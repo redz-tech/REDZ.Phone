@@ -13,7 +13,7 @@ REDZ_Phone_Parse($_POST['phone'], $_POST['phone_country'], ['MOBILE'])['e164']; 
 **Demo:** <https://redz-tech.github.io/REDZ.Phone/> (English, Русский, ไทย, עברית, 中文). In code: `REDZ.Phone` in the
 browser, functions `REDZ_Phone_*` in PHP.
 
-> **Status: 0.2.0, the engine and the field.** Offline checks only, no network. Coming next: an optional paid check
+> **Status: 0.3.0, the engine and the field.** Offline checks only, no network. Coming next: an optional paid check
 > that the number really works in the contact method the person chose (call, WhatsApp, Telegram). See `changelog.md`.
 
 ---
@@ -52,13 +52,13 @@ on every build that they answer alike (§8).
 
 | Path | What |
 |---|---|
-| `dist/redzphone.min.js`, `dist/redzphone.js` | engine and field: one global, `REDZ.Phone` (19 KB gzipped) |
-| `dist/redzphone.css` | the field's styles (1.5 KB gzipped) |
-| `dist/flags.png`, `dist/flags@2x.png` | flag sprite, 18 KB and 42 KB; keep them next to `redzphone.css` |
+| `dist/redz.phone.min.js`, `dist/redz.phone.js` | engine and field: one global, `REDZ.Phone` (19 KB gzipped) |
+| `dist/redz.phone.css` | the field's styles (1.5 KB gzipped) |
+| `dist/flags.png`, `dist/flags@2x.png` | flag sprite, 18 KB and 42 KB; keep them next to `redz.phone.css` |
 | `dist/meta/v9.0.41.json` | Google's rules for the browser, loaded on demand (41 KB gzipped) |
-| `php/redzphone.php` | PHP engine: functions `REDZ_Phone_*` |
+| `php/redz.phone.php` | PHP engine: functions `REDZ_Phone_*` |
 | `php/libphonenumber/` | giggsey/libphonenumber-for-php-lite, unmodified |
-| `docs/` | the demo (GitHub Pages); `docs/redzphone/` is a copy of the release files |
+| `docs/` | the demo (GitHub Pages); `docs/redz.phone/` is a copy of the release files |
 | `src/`, `tools/`, `tests/` | sources, build, gate and browser tests, test data (not needed at runtime) |
 
 To use it, copy `dist/` (browser) and `php/` (server). Nothing else is needed at runtime.
@@ -66,12 +66,12 @@ To use it, copy `dist/` (browser) and `php/` (server). Nothing else is needed at
 ## 3. The field
 
 ```html
-<link rel="stylesheet" href="/lib/redzphone/redzphone.css">
+<link rel="stylesheet" href="/lib/redz.phone/redz.phone.css">
 
 <label for="phone">Phone</label>
 <input id="phone" name="phone" type="tel" required>
 
-<script src="/lib/redzphone/redzphone.min.js"></script>
+<script src="/lib/redz.phone/redz.phone.min.js"></script>
 <script>
 	const phone = REDZ.Phone.field(document.getElementById('phone'), {
 		country: 'auto',
@@ -228,7 +228,7 @@ never replace it, and never declare it with `let` or `const`.
 ## 5. PHP
 
 ```php
-require '/path/to/redzphone/php/redzphone.php';
+require '/path/to/redz.phone/php/redz.phone.php';
 
 $r = REDZ_Phone_Parse($_POST['phone'] ?? '', $_POST['phone_country'] ?? 'TH', ['MOBILE']);
 if ($r['ok']) {
@@ -236,7 +236,7 @@ if ($r['ok']) {
 }
 ```
 
-Requirements: **PHP 8.5+** with `mbstring`. No Composer: `redzphone.php` registers its own autoloader for the
+Requirements: **PHP 8.5+** with `mbstring`. No Composer: `redz.phone.php` registers its own autoloader for the
 copy in `php/libphonenumber/`. If your application already loads giggsey/libphonenumber-for-php through Composer,
 both register the same `libphonenumber\` classes and the first loaded wins; keep the versions equal.
 
@@ -304,7 +304,7 @@ of one digit becomes `too_short` instead of a mere warning.
   - both engines give the same answer on 12,625 inputs: Google's example number for every region and type in a
     dozen spellings, plus the hand-written cases of `tests/cases.json`, which also carry the expected answers;
   - the vendored PHP library, the browser rules and the flag sprites are byte-for-byte what `npm run update`
-    produced; `dist/` is not older than `src/`, and the demo's copy in `docs/redzphone/` equals `dist/`.
+    produced; `dist/` is not older than `src/`, and the demo's copy in `docs/redz.phone/` equals `dist/`.
 - Every run first plants nine breaks (another release, a changed rule, a wrong expectation, an edited vendor
   file, a changed sprite…) and fails if it misses any of them.
 - `tests/known.json` lists where the two engines knowingly differ: one input that nobody types (`+1 1 310 1234`).
@@ -323,7 +323,7 @@ npm run uitest
 ```
 
 `update` also redraws the flag sprite from flag-icons for the regions of that release. Then raise the version in
-`package.json` and `REDZ_PHONE_VERSION` (`php/redzphone.php`), add a `changelog.md` entry and rebuild. Google
+`package.json` and `REDZ_PHONE_VERSION` (`php/redz.phone.php`), add a `changelog.md` entry and rebuild. Google
 releases every two weeks; giggsey-lite follows within hours.
 
 ## 10. Licence

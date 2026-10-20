@@ -14,7 +14,7 @@ const ABROAD = ['447911123456', '12015550123', '66812345678'];
 
 const pkg = readJson(path.join(ROOT, 'package.json'));
 const pins = readJson(PINS);
-const bundle = fs.readFileSync(path.join(ROOT, 'dist', 'redzphone.min.js'), 'utf8');
+const bundle = fs.readFileSync(path.join(ROOT, 'dist', 'redz.phone.min.js'), 'utf8');
 const metaText = fs.readFileSync(path.join(ROOT, pins.meta.file), 'utf8');
 const meta = JSON.parse(metaText);
 const examples = readJson(path.join(ROOT, 'tests', 'examples.json'));
@@ -156,7 +156,7 @@ function flagProblems(png, png2x, metadata) {
 
 // pairs: [[name, dist file, docs copy], …] as buffers; null where a file is missing
 function docsProblems(pairs) {
-	return pairs.flatMap(([rel, a, b]) => (a !== null && b !== null && a.equals(b) ? [] : [`docs/redzphone/${rel} differs from dist/ (run npm run build)`]));
+	return pairs.flatMap(([rel, a, b]) => (a !== null && b !== null && a.equals(b) ? [] : [`docs/redz.phone/${rel} differs from dist/ (run npm run build)`]));
 }
 
 const readOrNull = (file) => (fs.existsSync(file) ? fs.readFileSync(file) : null);
@@ -252,8 +252,8 @@ for (const minify of [false, true]) {
 		problems.push(`${path.relative(ROOT, options.outfile)} is stale (run npm run build)`);
 	}
 }
-if (readOrNull(path.join(ROOT, 'dist', 'redzphone.css'))?.toString('utf8') !== await buildCss(esbuild)) {
-	problems.push('dist/redzphone.css is stale (run npm run build)');
+if (readOrNull(path.join(ROOT, 'dist', 'redz.phone.css'))?.toString('utf8') !== await buildCss(esbuild)) {
+	problems.push('dist/redz.phone.css is stale (run npm run build)');
 }
 problems.push(...flagProblems(png, png2x, meta), ...docsProblems(docsPairs));
 const {unexpected, expected, stale} = splitKnown(diff, known);

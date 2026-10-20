@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>REDZ.Phone — phone number field demo</title>
 	<meta name="description" content="A phone field that turns whatever a person types into a checked E.164 number, with the same Google rules in the browser and in PHP.">
-	<link rel="stylesheet" href="redzphone/redzphone.css">
+	<link rel="stylesheet" href="redz.phone/redz.phone.css">
 	<link rel="stylesheet" href="demo.css">
 </head>
 <body>
@@ -60,8 +60,8 @@
 		<section class="card" aria-labelledby="use-title">
 			<h2 id="use-title" data-t="use"></h2>
 			<p class="hint" data-t="use_hint"></p>
-			<pre class="code" dir="ltr"><code>&lt;link rel="stylesheet" href="redzphone/redzphone.css"&gt;
-&lt;script src="redzphone/redzphone.min.js"&gt;&lt;/script&gt;
+			<pre class="code" dir="ltr"><code>&lt;link rel="stylesheet" href="redz.phone/redz.phone.css"&gt;
+&lt;script src="redz.phone/redz.phone.min.js"&gt;&lt;/script&gt;
 
 const phone = REDZ.Phone.field(document.querySelector('#phone'), {
 	country: 'auto',
@@ -74,7 +74,7 @@ form.addEventListener('submit', (e) =&gt; {
 		e.preventDefault();
 	}
 });</code></pre>
-			<pre class="code" dir="ltr"><code>require 'redzphone/php/redzphone.php';
+			<pre class="code" dir="ltr"><code>require 'redz.phone/php/redz.phone.php';
 
 $r = REDZ_Phone_Parse($_POST['phone'], $_POST['phone_country'], ['MOBILE']);
 if ($r['ok']) {
@@ -85,7 +85,7 @@ if ($r['ok']) {
 
 	<footer class="wrap foot" id="foot"></footer>
 
-	<script src="redzphone/redzphone.min.js"></script>
+	<script src="redz.phone/redz.phone.min.js"></script>
 	<script src="demo.js"></script>
 </body>
 </html>

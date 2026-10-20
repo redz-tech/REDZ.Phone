@@ -528,7 +528,7 @@ test('set() takes a pasted tel: link', async (p, expect) => {
 
 test('window.REDZ of another REDZ script survives the bundle', async (p, expect) => {
 	const got = await p.ev(`(async () => {
-		const bundle = await (await fetch('/dist/redzphone.min.js')).text();
+		const bundle = await (await fetch('/dist/redz.phone.min.js')).text();
 		window.REDZ = {post: () => 'cms'};
 		(0, eval)(bundle);
 		return [typeof REDZ.post, typeof REDZ.Phone.field, REDZ.post()];

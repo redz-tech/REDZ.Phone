@@ -19,7 +19,7 @@ REDZ.Phone ships parts of six other projects under their own licences.
 3. libphonenumber-js
    Copyright (c) 2016 @catamphetamine <purecatamphetamine@gmail.com>. MIT License.
    https://gitlab.com/catamphetamine/libphonenumber-js
-   Where: its core is bundled into dist/redzphone.js and dist/redzphone.min.js.
+   Where: its core is bundled into dist/redz.phone.js and dist/redz.phone.min.js.
 
    (The MIT License)
 

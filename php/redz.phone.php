@@ -1,7 +1,7 @@
 <?php
 /**
  * REDZ.Phone — phone number engine for PHP 8.5: normalisation, E.164, country and type on Google's rules.
- * dist/redzphone.js answers every input the same way; tools/gate.mjs proves it.
+ * dist/redz.phone.js answers every input the same way; tools/gate.mjs proves it.
  * @license MIT
  */
 
@@ -23,7 +23,7 @@ spl_autoload_register(static function (string $class): void {
 	}
 });
 
-const REDZ_PHONE_VERSION = '0.2.0';
+const REDZ_PHONE_VERSION = '0.3.0';
 const REDZ_PHONE_MAX_INPUT = 256;
 const REDZ_PHONE_MAX_DIGITS = 24;
 const REDZ_PHONE_TYPES = ['FIXED_LINE', 'MOBILE', 'FIXED_LINE_OR_MOBILE', 'TOLL_FREE', 'PREMIUM_RATE', 'SHARED_COST', 'VOIP', 'PERSONAL_NUMBER', 'PAGER', 'UAN', 'VOICEMAIL'];

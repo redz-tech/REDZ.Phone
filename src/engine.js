@@ -1,4 +1,4 @@
-// REDZ.Phone — phone number engine for the browser; php/redzphone.php answers every input the same way.
+// REDZ.Phone — phone number engine for the browser; php/redz.phone.php answers every input the same way.
 import {parsePhoneNumberWithError, ParseError, Metadata, isSupportedCountry} from 'libphonenumber-js/core';
 import {checkNumberLengthForType} from '../node_modules/libphonenumber-js/es6/helpers/checkNumberLength.js';
 

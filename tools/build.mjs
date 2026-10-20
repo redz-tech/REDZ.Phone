@@ -1,5 +1,5 @@
-// Builds dist/redzphone.js, dist/redzphone.min.js (one IIFE, global REDZ.Phone) and dist/redzphone.css for the pinned
-// Google release, then copies the release files the demo needs into docs/redzphone/.
+// Builds dist/redz.phone.js, dist/redz.phone.min.js (one IIFE, global REDZ.Phone) and dist/redz.phone.css for the pinned
+// Google release, then copies the release files the demo needs into docs/redz.phone/.
 // Usage: npm run build
 import fs from 'node:fs';
 import path from 'node:path';
@@ -11,13 +11,13 @@ for (const minify of [false, true]) {
 	await esbuild.build(options);
 	console.log(`built ${path.relative(ROOT, options.outfile)}`);
 }
-fs.writeFileSync(path.join(ROOT, 'dist', 'redzphone.css'), await buildCss(esbuild));
-console.log('built dist/redzphone.css');
+fs.writeFileSync(path.join(ROOT, 'dist', 'redz.phone.css'), await buildCss(esbuild));
+console.log('built dist/redz.phone.css');
 
-const docs = path.join(ROOT, 'docs', 'redzphone');
+const docs = path.join(ROOT, 'docs', 'redz.phone');
 fs.rmSync(docs, {recursive: true, force: true});
 for (const [from, to] of docsFiles()) {
 	fs.mkdirSync(path.dirname(to), {recursive: true});
 	fs.copyFileSync(from, to);
 }
-console.log('copied the release files into docs/redzphone/');
+console.log('copied the release files into docs/redz.phone/');

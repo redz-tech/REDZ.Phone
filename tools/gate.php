@@ -4,7 +4,7 @@
 
 declare(strict_types=1);
 
-require __DIR__ . '/../php/redzphone.php';
+require __DIR__ . '/../php/redz.phone.php';
 
 use libphonenumber\PhoneMetadata;
 use libphonenumber\PhoneNumberUtil;

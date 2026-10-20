@@ -3,11 +3,12 @@
 Design knowledge for maintaining **REDZ.Phone**. Public usage → `README.md`. History → `changelog.md`.
 The product is REDZ.Phone; in code it is the namespace `REDZ.Phone` in the browser (esbuild `globalName`, so
 `window.REDZ` is shared with other REDZ libraries) and the prefix `REDZ_Phone_` in PHP (constants `REDZ_PHONE_*`);
-files and the event use `redzphone`, CSS uses `rzp-`.
+files are `redz.phone.*` (since 0.3.0), CSS uses `rzp-`. The DOM event stays `redzphone`: jQuery reads a dot in an
+event name as a namespace, so `redz.phone` would reach jQuery listeners as the event `redz`.
 
 ## The contract
-For the same `(input, country, types)` the browser engine (`src/redzphone.js` → `dist/`) and the PHP engine
-(`php/redzphone.php`) return the same object. Everything else serves this promise, and `npm run gate` is its proof.
+For the same `(input, country, types)` the browser engine (`src/redz.phone.js` → `dist/`) and the PHP engine
+(`php/redz.phone.php`) return the same object. Everything else serves this promise, and `npm run gate` is its proof.
 A field enters the answer only if both engines can produce it identically.
 
 ## Where each half comes from
@@ -19,9 +20,9 @@ A field enters the answer only if both engines can produce it identically.
 - **Algorithms:** libphonenumber-js core in the browser, giggsey (a line-by-line port of Google's Java) in PHP.
   They are two ports, so they differ in corners; our wrapper code on both sides exists to remove those corners.
 - **Our own code, written twice (JS and PHP, kept line-for-line alike):** normalisation, the `+0` and `00`
-  rules, error mapping, the answer object. In the browser: `src/engine.js`; `src/redzphone.js` is only the entry
+  rules, error mapping, the answer object. In the browser: `src/engine.js`; `src/redz.phone.js` is only the entry
   that decides what the global `REDZ.Phone` exports (engine.js also exports helpers for the field that stay private).
-- **The field** (`src/field.js`, `src/redzphone.css`) is browser-only and outside the parity contract: it calls
+- **The field** (`src/field.js`, `src/redz.phone.css`) is browser-only and outside the parity contract: it calls
   `parse()` and shows the answer; the server re-parses the raw input with the picked country and gets the same one.
 - **Flags:** `npm run update` draws `dist/flags.png` (20×15) and `flags@2x.png` (40×30) from flag-icons with
   sharp: one column, one row per region of the metadata in ISO order, `XX` (no country) last. The row order goes
@@ -82,8 +83,8 @@ Checks: identical release and version everywhere; vendored tree hash = pins; bro
 browser rules = PHP rules for every region and type (`rulesOf` reads libphonenumber-js metadata v4 positions —
 update it if the generator's format version moves); `dist/` = a fresh in-memory esbuild of `src/`; answers equal
 on the corpus; expected answers met (hand-written cases and Google's example numbers, which must be valid for
-their type); `dist/redzphone.css` is fresh; the sprites match the pins and their rows match the metadata;
-`docs/redzphone/` equals `dist/`. Self-test on every run: nine planted breaks must all go red.
+their type); `dist/redz.phone.css` is fresh; the sprites match the pins and their rows match the metadata;
+`docs/redz.phone/` equals `dist/`. Self-test on every run: nine planted breaks must all go red.
 
 `tools/uitest.mjs` (`npm run uitest`) is the field's check: a small DevTools-protocol client (node's own WebSocket,
 no puppeteer) drives headless Chrome over a static server on `tests/ui.html`, one fresh page per scenario, then

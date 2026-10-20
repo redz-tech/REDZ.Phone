@@ -3,6 +3,13 @@
 All notable changes to **REDZ.Phone**. Versions are its own and independent of any host application.
 Listed newest → oldest.
 
+## 0.3.0 — Files named after the product
+- **Renamed:** `dist/redzphone.js`, `dist/redzphone.min.js` and `dist/redzphone.css` are now `dist/redz.phone.*`;
+  `php/redzphone.php` is `php/redz.phone.php`; the demo's copy `docs/redzphone/` is `docs/redz.phone/`. Change the
+  paths you load them from; nothing else changes.
+- **Kept:** the global `REDZ.Phone`, the PHP functions `REDZ_Phone_*`, the CSS classes `rzp-` and the event
+  `redzphone` — jQuery would read a dot in an event name as a namespace.
+
 ## 0.2.0 — The field and the demo
 - **`REDZ.Phone.field(input, options)`** wraps an existing `<input>`: a country button with the flag and the calling
   code, a line under the input that reads the number back with its country (`+44 7400 123456 · United Kingdom`) or
