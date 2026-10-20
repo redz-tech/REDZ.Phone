@@ -129,3 +129,5 @@ reason, and the healthy copy green.
   gate; if the two engines cannot agree on it, it does not belong in the answer.
 - A new normalisation rule: write it in both engines and add hand-written cases with expected answers; the gate
   then proves both the rule and its twin.
+- Numbers in the docs, the demo and the tests come from Google's examples (`tests/examples.json`), never from real
+  orders or messages: the repository is public, and a number once pushed stays in its history.
