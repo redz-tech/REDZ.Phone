@@ -1,0 +1,29 @@
+{
+	"google": {
+		"tag": "v9.0.41",
+		"xml": "https://raw.githubusercontent.com/google/libphonenumber/v9.0.41/resources/PhoneNumberMetadata.xml",
+		"xml_sha256": "9d3b07b53c7e8a437ddc316249620b51d4090987026f9e8ffb9743aab4e4d5a6"
+	},
+	"giggsey": {
+		"package": "giggsey/libphonenumber-for-php-lite",
+		"version": "9.0.41",
+		"commit": "6ffb41a259c950d6f4df5596e32917f631052910",
+		"tarball_sha256": "26a2ce01383b60fb1347717f8b02bd2d80c1b143e2790e1109fe31680b9ae38a",
+		"tree_sha256": "ebb1962da4855be4f7de8c239c771f971b590d632210c00774055bf736b3f4a0"
+	},
+	"generator": {
+		"version": "2.0.6",
+		"format": 4
+	},
+	"meta": {
+		"file": "dist/meta/v9.0.41.json",
+		"sha256": "47659c23b13fee86485c344e577dc671d4c042a90a4251eed4bb7c683230d67b"
+	},
+	"flags": {
+		"package": "flag-icons",
+		"version": "7.6.0",
+		"png": "caa17465dc31541ed1977afed042d3ea83eb07537e3bf90d814e62f8da042ffc",
+		"png2x": "144769b2090ce42a01eed305afeb0f7ff5096ef5a30f072f9e7086fcd055ad99",
+		"order": "AC AD AE AF AG AI AL AM AO AR AS AT AU AW AX AZ BA BB BD BE BF BG BH BI BJ BL BM BN BO BQ BR BS BT BW BY BZ CA CC CD CF CG CH CI CK CL CM CN CO CR CU CV CW CX CY CZ DE DJ DK DM DO DZ EC EE EG EH ER ES ET FI FJ FK FM FO FR GA GB GD GE GF GG GH GI GL GM GN GP GQ GR GT GU GW GY HK HN HR HT HU ID IE IL IM IN IO IQ IR IS IT JE JM JO JP KE KG KH KI KM KN KP KR KW KY KZ LA LB LC LI LK LR LS LT LU LV LY MA MC MD ME MF MG MH MK ML MM MN MO MP MQ MR MS MT MU MV MW MX MY MZ NA NC NE NF NG NI NL NO NP NR NU NZ OM PA PE PF PG PH PK PL PM PR PS PT PW PY QA RE RO RS RU RW SA SB SC SD SE SG SH SI SJ SK SL SM SN SO SR SS ST SV SX SY SZ TA TC TD TG TH TJ TK TL TM TN TO TR TT TV TW TZ UA UG US UY UZ VA VC VE VG VI VN VU WF WS XK YE YT ZA ZM ZW XX"
+	}
+}

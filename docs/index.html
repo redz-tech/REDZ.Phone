@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>REDZ.Phone — phone number field demo</title>
+	<meta name="description" content="A phone field that turns whatever a person types into a checked E.164 number, with the same Google rules in the browser and in PHP.">
+	<link rel="stylesheet" href="redzphone/redzphone.css">
+	<link rel="stylesheet" href="demo.css">
+</head>
+<body>
+	<header class="top">
+		<div class="wrap top-row">
+			<a class="brand" href="./">REDZ.Phone</a>
+			<nav class="langs" id="langs" aria-label="Language"></nav>
+		</div>
+	</header>
+
+	<main class="wrap">
+		<section class="hero">
+			<h1>REDZ.Phone</h1>
+			<p class="lead" data-t="tagline"></p>
+			<p class="links">
+				<a href="https://github.com/redz-tech/REDZ.Phone">GitHub</a>
+				<a href="https://github.com/redz-tech/REDZ.Phone/blob/main/README.md" data-t="docs"></a>
+				<a href="https://github.com/redz-tech/REDZ.Phone/blob/main/changelog.md" data-t="changelog"></a>
+			</p>
+		</section>
+
+		<section class="card" aria-labelledby="try-title">
+			<h2 id="try-title" data-t="try"></h2>
+			<p class="hint" data-t="try_hint"></p>
+			<form id="demo-form" class="demo-form" novalidate>
+				<label class="label" for="phone" data-t="phone"></label>
+				<input id="phone" class="input" name="phone" type="tel" required>
+				<button class="send" type="submit" data-t="send"></button>
+				<p id="sent" class="sent" role="status" hidden></p>
+			</form>
+
+			<details class="settings">
+				<summary data-t="settings"></summary>
+				<div class="settings-grid">
+					<label class="setting"><span data-t="s_country"></span><select id="s-country"></select></label>
+					<label class="setting"><span data-t="s_types"></span><select id="s-types"></select></label>
+					<label class="setting"><span data-t="s_list"></span><select id="s-list"></select></label>
+					<label class="setting setting-check"><input id="s-methods" type="checkbox" checked> <span data-t="s_methods"></span></label>
+				</div>
+			</details>
+
+			<h3 class="small-title" data-t="state"></h3>
+			<pre class="state" id="state" dir="ltr"></pre>
+		</section>
+
+		<section class="card" aria-labelledby="cases-title">
+			<h2 id="cases-title" data-t="tricky"></h2>
+			<p class="hint" data-t="tricky_hint"></p>
+			<ul class="cases" id="cases"></ul>
+		</section>
+
+		<section class="card" aria-labelledby="use-title">
+			<h2 id="use-title" data-t="use"></h2>
+			<p class="hint" data-t="use_hint"></p>
+			<pre class="code" dir="ltr"><code>&lt;link rel="stylesheet" href="redzphone/redzphone.css"&gt;
+&lt;script src="redzphone/redzphone.min.js"&gt;&lt;/script&gt;
+
+const phone = REDZ.Phone.field(document.querySelector('#phone'), {
+	country: 'auto',
+	popular: ['TH', 'GB', 'RU', 'CN', 'US'],
+	methods: ['call', 'whatsapp', 'telegram', 'line'],
+	hidden: {country: 'phone_country', method: 'contact'},
+});
+form.addEventListener('submit', (e) =&gt; {
+	if (!phone.check().valid) {
+		e.preventDefault();
+	}
+});</code></pre>
+			<pre class="code" dir="ltr"><code>require 'redzphone/php/redzphone.php';
+
+$r = REDZ_Phone_Parse($_POST['phone'], $_POST['phone_country'], ['MOBILE']);
+if ($r['ok']) {
+	$phone = $r['e164']; // +447400123456
+}</code></pre>
+		</section>
+	</main>
+
+	<footer class="wrap foot" id="foot"></footer>
+
+	<script src="redzphone/redzphone.min.js"></script>
+	<script src="demo.js"></script>
+</body>
+</html>

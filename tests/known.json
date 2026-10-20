@@ -1,0 +1,10 @@
+[
+	{
+		"in": "+113101234",
+		"country": "",
+		"types": [],
+		"why": "national prefix 1 right after +1: libphonenumber-js tests the stripped 310 1234 against Canada, Google against the main region USA; no real input looks like this",
+		"js": {"ok": true, "error": null, "warning": null, "e164": "+13101234", "country": "CA", "code": "1", "type": "UAN", "international": "+1 310 1234"},
+		"php": {"ok": false, "error": "too_short", "warning": null, "e164": null, "country": null, "code": null, "type": null, "international": null}
+	}
+]

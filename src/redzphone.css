@@ -1,0 +1,271 @@
+/* REDZ.Phone field. Theme it with the --rzp-* variables; flags.png and flags@2x.png live next to this file. */
+.rzp {
+	--rzp-accent: #1a6fd9;
+	--rzp-accent-soft: rgba(26, 111, 217, .1);
+	--rzp-border: #c5ccd6;
+	--rzp-radius: 8px;
+	--rzp-muted: #5c6878;
+	--rzp-ok: #13723a;
+	--rzp-warn: #8f5300;
+	--rzp-error: #c42b1c;
+	--rzp-menu-bg: #fff;
+	--rzp-menu-text: #1d2733;
+	--rzp-menu-active: #e8f0fc;
+	--rzp-z: 30;
+	--rzp-call: currentColor;
+	--rzp-whatsapp: #25d366;
+	--rzp-telegram: #26a5e4;
+	--rzp-line: #00c300;
+	position: relative;
+	display: block;
+}
+.rzp-line {
+	position: relative;
+}
+.rzp-country {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	inset-inline-start: 0;
+	z-index: 1;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin: 0;
+	padding: 0 8px;
+	border: 0;
+	border-radius: var(--rzp-radius);
+	background: none;
+	color: inherit;
+	font: inherit;
+	line-height: 1;
+	cursor: pointer;
+}
+.rzp-country:focus-visible {
+	outline: 2px solid var(--rzp-accent);
+	outline-offset: -2px;
+}
+.rzp-country:disabled {
+	cursor: not-allowed;
+}
+.rzp.is-off .rzp-country {
+	display: none;
+}
+.rzp-flag {
+	flex: none;
+	display: inline-block;
+	width: 20px;
+	height: 15px;
+	border-radius: 2px;
+	background-image: url(flags.png);
+	background-image: -webkit-image-set(url(flags.png) 1x, url(flags@2x.png) 2x);
+	background-image: image-set(url(flags.png) 1x, url(flags@2x.png) 2x);
+	background-repeat: no-repeat;
+	background-size: 100% auto;
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, .12);
+}
+.rzp-code {
+	font-variant-numeric: tabular-nums;
+}
+.rzp-caret {
+	width: 0;
+	height: 0;
+	border-top: 5px solid currentColor;
+	border-right: 4px solid transparent;
+	border-left: 4px solid transparent;
+	opacity: .55;
+}
+.rzp.is-open .rzp-caret {
+	transform: rotate(180deg);
+}
+.rzp-list {
+	position: absolute;
+	inset-inline-start: 0;
+	z-index: var(--rzp-z);
+	box-sizing: border-box;
+	width: 100%;
+	min-width: 260px;
+	margin-top: 4px;
+	overflow: hidden;
+	border: 1px solid var(--rzp-border);
+	border-radius: var(--rzp-radius);
+	background: var(--rzp-menu-bg);
+	color: var(--rzp-menu-text);
+	box-shadow: 0 10px 28px rgba(0, 0, 0, .16);
+}
+.rzp-inline .rzp-list {
+	position: static;
+	min-width: 0;
+	box-shadow: none;
+}
+.rzp-list[hidden] {
+	display: none;
+}
+.rzp-search {
+	display: block;
+	box-sizing: border-box;
+	width: 100%;
+	margin: 0;
+	padding: 10px 12px;
+	border: 0;
+	border-bottom: 1px solid var(--rzp-border);
+	border-radius: 0;
+	background: transparent;
+	color: inherit;
+	font: inherit;
+	font-size: 16px;
+	outline: none;
+}
+.rzp-options {
+	position: relative;
+	max-height: min(288px, 45vh);
+	margin: 0;
+	padding: 4px;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	list-style: none;
+}
+.rzp-options li {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	min-height: 40px;
+	box-sizing: border-box;
+	padding: 6px 10px;
+	border-radius: 6px;
+	cursor: pointer;
+}
+.rzp-options li.is-active {
+	background: var(--rzp-menu-active);
+}
+.rzp-options li[aria-selected="true"] {
+	font-weight: 600;
+}
+.rzp-options li.rzp-last {
+	margin-bottom: 9px;
+}
+.rzp-options li.rzp-last::after {
+	content: "";
+	position: absolute;
+	inset-inline: 4px;
+	bottom: -5px;
+	border-bottom: 1px solid var(--rzp-border);
+}
+.rzp-name {
+	flex: 1;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.rzp-dial {
+	color: var(--rzp-muted);
+	font-variant-numeric: tabular-nums;
+}
+.rzp-empty {
+	padding: 12px;
+	color: var(--rzp-muted);
+}
+.rzp-empty[hidden] {
+	display: none;
+}
+.rzp-note {
+	margin-top: 6px;
+	font-size: 13px;
+	line-height: 1.4;
+}
+.rzp-note:empty {
+	display: none;
+}
+.rzp-note.is-ok {
+	color: var(--rzp-ok);
+}
+.rzp-note.is-ok::before {
+	content: "\2713\00a0";
+}
+.rzp-note.is-warn {
+	color: var(--rzp-warn);
+}
+.rzp-note.is-error {
+	color: var(--rzp-error);
+}
+.rzp-confirm {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-top: 6px;
+	color: inherit;
+	font-weight: 600;
+	cursor: pointer;
+}
+.rzp-confirm input {
+	width: 18px;
+	height: 18px;
+	margin: 0;
+	accent-color: var(--rzp-accent);
+}
+.rzp-methods {
+	margin-top: 10px;
+}
+.rzp-methods-label {
+	margin-bottom: 6px;
+	font-size: 13px;
+	color: var(--rzp-muted);
+}
+.rzp-radios {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+.rzp-method {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	min-height: 40px;
+	margin: 0;
+	padding: 6px 12px;
+	border: 1px solid var(--rzp-border);
+	border-radius: 999px;
+	background: transparent;
+	color: inherit;
+	font: inherit;
+	font-size: 14px;
+	line-height: 1.2;
+	cursor: pointer;
+}
+.rzp-method svg {
+	flex: none;
+	width: 18px;
+	height: 18px;
+}
+.rzp-method-call svg {
+	width: 15px;
+	height: 15px;
+	fill: var(--rzp-call);
+}
+.rzp-method-whatsapp svg {
+	fill: var(--rzp-whatsapp);
+}
+.rzp-method-telegram svg {
+	fill: var(--rzp-telegram);
+}
+.rzp-method-line svg {
+	fill: var(--rzp-line);
+}
+.rzp-method[aria-checked="true"] {
+	border-color: var(--rzp-accent);
+	background: var(--rzp-accent-soft);
+	box-shadow: inset 0 0 0 1px var(--rzp-accent);
+	font-weight: 600;
+}
+.rzp-method:focus-visible {
+	outline: 2px solid var(--rzp-accent);
+	outline-offset: 2px;
+}
+.rzp-method:disabled {
+	cursor: not-allowed;
+}
+.rzp-radios.is-missing .rzp-method {
+	border-color: var(--rzp-error);
+}

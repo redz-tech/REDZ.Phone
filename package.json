@@ -1,0 +1,21 @@
+{
+	"name": "redz-phone",
+	"version": "0.2.0",
+	"private": true,
+	"description": "Phone number field: country picker, E.164 and validation with the same Google rules in the browser and in PHP",
+	"license": "MIT",
+	"type": "module",
+	"scripts": {
+		"update": "node tools/update.mjs",
+		"build": "node tools/build.mjs",
+		"gate": "node tools/gate.mjs",
+		"uitest": "node tools/uitest.mjs"
+	},
+	"devDependencies": {
+		"esbuild": "0.28.2",
+		"flag-icons": "7.6.0",
+		"libphonenumber-js": "1.13.15",
+		"libphonenumber-metadata-generator": "2.0.6",
+		"sharp": "0.35.5"
+	}
+}
