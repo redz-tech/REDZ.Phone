@@ -13,7 +13,7 @@ REDZ_Phone_Parse($_POST['phone'], $_POST['phone_country'], ['MOBILE'])['e164']; 
 **Demo:** <https://redz-tech.github.io/REDZ.Phone/> (English, Русский, ไทย, עברית, 中文). In code: `REDZ.Phone` in the
 browser, functions `REDZ_Phone_*` in PHP.
 
-> **Status: 0.3.0, the engine and the field.** Offline checks only, no network. Coming next: an optional paid check
+> **Status: 0.3.1, the engine and the field.** Offline checks only, no network. Coming next: an optional paid check
 > that the number really works in the contact method the person chose (call, WhatsApp, Telegram). See `changelog.md`.
 
 ---

@@ -3,6 +3,11 @@
 All notable changes to **REDZ.Phone**. Versions are its own and independent of any host application.
 Listed newest → oldest.
 
+## 0.3.1 — A clean inspection list
+- **No behaviour change.** The sources pass PhpStorm's inspections: two needless escapes in a regular expression,
+  attribute values turned into strings explicitly, a needless cast in `REDZ_Phone_Normalize`.
+- The PHP engine says why it reads giggsey's internal metadata classes: the copy is pinned and the gate checks it.
+
 ## 0.3.0 — Files named after the product
 - **Renamed:** `dist/redzphone.js`, `dist/redzphone.min.js` and `dist/redzphone.css` are now `dist/redz.phone.*`;
   `php/redzphone.php` is `php/redz.phone.php`; the demo's copy `docs/redzphone/` is `docs/redz.phone/`. Change the

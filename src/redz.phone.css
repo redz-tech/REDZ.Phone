@@ -1,4 +1,4 @@
-/* REDZ.Phone field. Theme it with the --rzp-* variables; flags.png and flags@2x.png live next to this file. */
+/* REDZ.Phone field. Theme it with the --rzp-* variables; flags.png and flags@2x.png live next to the built file. */
 .rzp {
 	--rzp-accent: #1a6fd9;
 	--rzp-accent-soft: rgba(26, 111, 217, .1);
@@ -51,6 +51,7 @@
 .rzp.is-off .rzp-country {
 	display: none;
 }
+/*noinspection CssUnknownTarget*/
 .rzp-flag {
 	flex: none;
 	display: inline-block;

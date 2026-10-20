@@ -2,7 +2,9 @@
 /**
  * REDZ.Phone — phone number engine for PHP 8.5: normalisation, E.164, country and type on Google's rules.
  * dist/redz.phone.js answers every input the same way; tools/gate.mjs proves it.
+ * It reads giggsey's internal metadata classes on purpose: the copy is pinned (tools/pins.json) and the gate checks it.
  * @license MIT
+ * @noinspection PhpInternalEntityUsedInspection
  */
 
 declare(strict_types=1);
@@ -23,7 +25,7 @@ spl_autoload_register(static function (string $class): void {
 	}
 });
 
-const REDZ_PHONE_VERSION = '0.3.0';
+const REDZ_PHONE_VERSION = '0.3.1';
 const REDZ_PHONE_MAX_INPUT = 256;
 const REDZ_PHONE_MAX_DIGITS = 24;
 const REDZ_PHONE_TYPES = ['FIXED_LINE', 'MOBILE', 'FIXED_LINE_OR_MOBILE', 'TOLL_FREE', 'PREMIUM_RATE', 'SHARED_COST', 'VOIP', 'PERSONAL_NUMBER', 'PAGER', 'UAN', 'VOICEMAIL'];
@@ -65,7 +67,7 @@ function REDZ_Phone_Normalize(string $input): string {
 		}
 		foreach (REDZ_PHONE_DIGIT_ZEROS as $zero) {
 			if ($cp >= $zero && $cp <= $zero + 9) {
-				$digits .= (string)($cp - $zero);
+				$digits .= $cp - $zero;
 				break;
 			}
 		}

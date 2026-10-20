@@ -124,6 +124,13 @@ reason, and the healthy copy green.
   in Chrome; another browser may word them differently, which is fine for display and search.
 - **DevTools key events:** Enter needs `text: '\r'` on `keyDown` to click a focused button; other keys go as
   `rawKeyDown`.
+- **The sprites are pinned bytes.** An image optimiser run over `flags*.png` recompresses them lossily (some flags
+  change colour) and the gate goes red. Restore them from git; `npm run update` alone makes sprites that match the pins.
+- **PhpStorm's inspection list** stays clean only with `.cache/`, `dist/` and `docs/redz.phone/` excluded in the IDE:
+  the cached giggsey gives "multiple definitions", the minified copies "duplicated code", the bundle hundreds of
+  libphonenumber-js and ES2018-lowering remarks. The remaining exceptions are suppressed in place, and a comment in
+  each file says why: `CssUnknownTarget` in `src/redz.phone.css`, `PhpInternalEntityUsedInspection` in
+  `php/redz.phone.php`, `CssUnusedSymbol` in `tests/ui.html`.
 
 ## Extending
 - A new field in the answer: add it to both `describe`/`REDZ_Phone_Result` and `fail`/`REDZ_Phone_Fail`, run the

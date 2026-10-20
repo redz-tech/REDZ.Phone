@@ -564,7 +564,7 @@ function el(tag, className, attrs = {}, text = '') {
 		node.className = className;
 	}
 	for (const [k, v] of Object.entries(attrs)) {
-		node.setAttribute(k, v);
+		node.setAttribute(k, String(v));
 	}
 	if (text) {
 		node.textContent = text;
@@ -587,8 +587,8 @@ function icon(method) {
 // Text with {placeholders}; numbers stay left-to-right inside right-to-left text.
 function fill(text, values = {}) {
 	const out = document.createDocumentFragment();
-	String(text).split(/(\{\w+\})/).forEach((part) => {
-		const key = /^\{(\w+)\}$/.exec(part)?.[1];
+	String(text).split(/(\{\w+})/).forEach((part) => {
+		const key = /^\{(\w+)}$/.exec(part)?.[1];
 		if (key === undefined || !(key in values)) {
 			if (part) {
 				out.append(part);

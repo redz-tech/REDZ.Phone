@@ -302,7 +302,7 @@
 	const query = new URLSearchParams(location.search).get('lang');
 	const lang = LANGS[query] ? query : (Object.keys(LANGS).find((l) => (navigator.language || '').toLowerCase().startsWith(l)) || 'en');
 	const P = PAGE[lang];
-	const $ = (id) => document.getElementById(id);
+	const byId = (id) => document.getElementById(id);
 	const regionName = (() => {
 		try {
 			const names = new Intl.DisplayNames([lang, 'en'], {type: 'region'});
@@ -326,7 +326,7 @@
 		if (code === lang) {
 			a.setAttribute('aria-current', 'true');
 		}
-		$('langs').append(a);
+		byId('langs').append(a);
 	});
 
 	const option = (select, value, text) => {
@@ -335,42 +335,42 @@
 		o.textContent = text;
 		select.append(o);
 	};
-	option($('s-country'), 'auto', P.s_auto);
-	option($('s-country'), '', P.s_none);
-	COUNTRIES.forEach((iso) => option($('s-country'), iso, regionName(iso)));
-	option($('s-types'), 'MOBILE', P.s_mobile);
-	option($('s-types'), '', P.s_any);
-	option($('s-list'), 'float', P.s_float);
-	option($('s-list'), 'inline', P.s_inline);
+	option(byId('s-country'), 'auto', P.s_auto);
+	option(byId('s-country'), '', P.s_none);
+	COUNTRIES.forEach((iso) => option(byId('s-country'), iso, regionName(iso)));
+	option(byId('s-types'), 'MOBILE', P.s_mobile);
+	option(byId('s-types'), '', P.s_any);
+	option(byId('s-list'), 'float', P.s_float);
+	option(byId('s-list'), 'inline', P.s_inline);
 
-	const input = $('phone');
+	const input = byId('phone');
 	const demo = {field: null};
 	window.demo = demo;
 
 	function build() {
 		demo.field?.destroy();
 		demo.field = window.REDZ.Phone.field(input, {
-			country: $('s-country').value,
+			country: byId('s-country').value,
 			popular: ['TH', 'GB', 'RU', 'CN', 'US'],
-			types: $('s-types').value ? [$('s-types').value] : [],
-			list: $('s-list').value,
-			methods: $('s-methods').checked ? Object.keys(METHODS) : [],
-			methodRequired: $('s-methods').checked,
+			types: byId('s-types').value ? [byId('s-types').value] : [],
+			list: byId('s-list').value,
+			methods: byId('s-methods').checked ? Object.keys(METHODS) : [],
+			methodRequired: byId('s-methods').checked,
 			texts: FIELD[lang],
 			hidden: {country: 'phone_country', method: 'contact'},
 		});
-		$('sent').hidden = true;
+		byId('sent').hidden = true;
 	}
 
 	input.addEventListener('redzphone', (e) => {
-		$('state').textContent = JSON.stringify(e.detail, null, 2);
+		byId('state').textContent = JSON.stringify(e.detail, null, 2);
 	});
-	['s-country', 's-types', 's-list', 's-methods'].forEach((id) => $(id).addEventListener('change', build));
+	['s-country', 's-types', 's-list', 's-methods'].forEach((id) => byId(id).addEventListener('change', build));
 
-	$('demo-form').addEventListener('submit', (e) => {
+	byId('demo-form').addEventListener('submit', (e) => {
 		e.preventDefault();
 		const s = demo.field.check();
-		const sent = $('sent');
+		const sent = byId('sent');
 		sent.hidden = false;
 		sent.className = s.valid ? 'sent is-ok' : 'sent is-bad';
 		sent.textContent = s.valid ? `${P.sent}: ${s.result ? s.result.e164 : s.input}${s.method ? ` · ${FIELD[lang][s.method] || METHODS[s.method]}` : ''}` : P.fix;
@@ -401,12 +401,12 @@
 			input.scrollIntoView({block: 'center', behavior: 'smooth'});
 		});
 		li.append(b);
-		$('cases').append(li);
+		byId('cases').append(li);
 	});
 
 	const foot = document.createElement('span');
 	foot.textContent = `REDZ.Phone ${window.REDZ.Phone.version} · ${P.foot.replace('{google}', window.REDZ.Phone.google)}`;
-	$('foot').append(foot);
+	byId('foot').append(foot);
 
 	build();
 })();

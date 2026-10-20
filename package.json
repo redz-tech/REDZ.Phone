@@ -1,6 +1,6 @@
 {
 	"name": "redz-phone",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"private": true,
 	"description": "Phone number field: country picker, E.164 and validation with the same Google rules in the browser and in PHP",
 	"license": "MIT",
