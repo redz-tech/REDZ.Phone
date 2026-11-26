@@ -3,6 +3,17 @@
 All notable changes to **REDZ.Phone**. Versions are its own and independent of any host application.
 Listed newest → oldest.
 
+## 0.4.1 - A host can theme the field
+- **The sheet sits in the cascade layer `redz.phone`** and declares no order: a host that layers its CSS (REDZ.UI) places
+  it where the field belongs; a page without layers sees no change.
+- **The defaults moved into the rules:** no `--rzp-*` is declared on `.rzp` any more, every rule reads `var(--rzp-x,
+  default)`, so a value set on any ancestor reaches the field, as the README always said. New `--rzp-focus` for the
+  focus ring (falls back to `--rzp-accent`).
+- **`--rzp-button`:** the country button's width, written on `.rzp` and on the element the input was in, so a floating
+  label beside the input can start after the button; kept current on every change and removed while off and on `destroy()`.
+- **The input's padding is measured on every repad**, not once when the field is made: a host may change it at run time.
+- README: the public DOM (classes, states, aria) listed in «The DOM».
+
 ## 0.4.0 — The country button says what it is for
 - **No country yet:** the button shows a globe and the word "Country" instead of a blank flag, which people did not
   take for something to press. The word is `texts.country`, so a page in another language shows its own word.

@@ -1,4 +1,4 @@
-/*! REDZ.Phone 0.4.0 | MIT | metadata: Google libphonenumber v9.0.41 (Apache-2.0) | engine: libphonenumber-js (MIT) | icons: Bootstrap Icons (MIT), Simple Icons (CC0) | see NOTICE */
+/*! REDZ.Phone 0.4.1 | MIT | metadata: Google libphonenumber v9.0.41 (Apache-2.0) | engine: libphonenumber-js (MIT) | icons: Bootstrap Icons (MIT), Simple Icons (CC0) | see NOTICE */
 var REDZ = REDZ || {};
 REDZ.Phone = (() => {
   var __defProp = Object.defineProperty;
@@ -2283,7 +2283,7 @@ REDZ.Phone = (() => {
   var TYPES = ["FIXED_LINE", "MOBILE", "FIXED_LINE_OR_MOBILE", "TOLL_FREE", "PREMIUM_RATE", "SHARED_COST", "VOIP", "PERSONAL_NUMBER", "PAGER", "UAN", "VOICEMAIL"];
   var DIGIT_ZEROS = [48, 1632, 1776, 1984, 2406, 2534, 2662, 2790, 2918, 3046, 3174, 3302, 3430, 3558, 3664, 3792, 3872, 4160, 4240, 6112, 6160, 6470, 6608, 6784, 6800, 6992, 7088, 7232, 7248, 42528, 43216, 43264, 43472, 43504, 43600, 44016, 65296, 66720, 68912, 68928, 69734, 69872, 69942, 70096, 70384, 70736, 70864, 71248, 71360, 71376, 71386, 71472, 71904, 72016, 72688, 72784, 73040, 73120, 73184, 73552, 90416, 92768, 92864, 93008, 93552, 118e3, 120782, 120792, 120802, 120812, 120822, 123200, 123632, 124144, 124401, 125264, 130032];
   var SCRIPT = typeof document !== "undefined" && document.currentScript ? document.currentScript.src : "";
-  var version = "0.4.0";
+  var version = "0.4.1";
   var google = "v9.0.41";
   var meta = null;
   var loading = null;
@@ -2555,8 +2555,7 @@ REDZ.Phone = (() => {
     let codes = {};
     const saved = Object.fromEntries(SAVED.map((a) => [a, input.getAttribute(a)]));
     const savedPad = [input.style.paddingLeft, input.style.paddingRight];
-    const cs = getComputedStyle(input);
-    const pad = [parseFloat(cs.paddingLeft) + parseFloat(cs.borderLeftWidth), parseFloat(cs.paddingRight) + parseFloat(cs.borderRightWidth)].map((v) => v || 0);
+    const holder = input.parentElement;
     const root = el("div", o.list === "inline" ? "rzp rzp-inline" : "rzp");
     const line = el("div", "rzp-line");
     const button = el("button", "rzp-country", { type: "button", "aria-haspopup": "listbox", "aria-expanded": "false", "aria-controls": `${id}-list` });
@@ -2609,16 +2608,28 @@ REDZ.Phone = (() => {
       input.id || (input.id = hostFor);
       host.htmlFor = input.id;
     }
+    function width(px) {
+      for (const node of [root, holder]) {
+        if (px === null) {
+          node == null ? void 0 : node.style.removeProperty("--rzp-button");
+        } else {
+          node == null ? void 0 : node.style.setProperty("--rzp-button", `${px}px`);
+        }
+      }
+    }
     function repad() {
       const rtl = getComputedStyle(root).direction === "rtl";
-      const side = rtl ? 1 : 0;
       [input.style.paddingLeft, input.style.paddingRight] = savedPad;
       if (st.off) {
+        width(null);
         return;
       }
+      const cs = getComputedStyle(input);
+      const start = rtl ? parseFloat(cs.paddingRight) + parseFloat(cs.borderRightWidth) : parseFloat(cs.paddingLeft) + parseFloat(cs.borderLeftWidth);
       button.style.paddingLeft = button.style.paddingRight = "";
-      button.style[rtl ? "paddingRight" : "paddingLeft"] = `${pad[side]}px`;
+      button.style[rtl ? "paddingRight" : "paddingLeft"] = `${start || 0}px`;
       input.style[rtl ? "paddingRight" : "paddingLeft"] = `${button.offsetWidth}px`;
+      width(button.offsetWidth);
     }
     const resize = typeof ResizeObserver === "function" ? new ResizeObserver(repad) : null;
     resize == null ? void 0 : resize.observe(button);
@@ -2972,6 +2983,7 @@ REDZ.Phone = (() => {
       root.remove();
       SAVED.forEach((a) => saved[a] === null ? input.removeAttribute(a) : input.setAttribute(a, saved[a]));
       [input.style.paddingLeft, input.style.paddingRight] = savedPad;
+      width(null);
       if (hostFor !== null) {
         host.removeAttribute("for");
         if (hostFor !== "") {

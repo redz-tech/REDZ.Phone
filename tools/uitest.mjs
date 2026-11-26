@@ -552,6 +552,39 @@ test('set() takes a pasted tel: link', async (p, expect) => {
 	expect('GB, valid', s.country === 'GB' && s.valid, s);
 });
 
+test('a host themes it: its layer, ancestor variables, --rzp-button on the holder, padding read again', async (p, expect) => {
+	await p.mount({country: 'TH'});
+	const got = await p.ev(`(() => {
+		const form = document.getElementById('form');
+		const input = document.getElementById('phone');
+		const button = document.querySelector('.rzp-country');
+		const r = {layer: [...document.styleSheets].some((s) => [...s.cssRules].some((x) => x instanceof CSSLayerBlockRule && x.name === 'redz.phone'))};
+		r.holder = form.style.getPropertyValue('--rzp-button');
+		r.root = document.querySelector('.rzp').style.getPropertyValue('--rzp-button');
+		r.width = button.offsetWidth + 'px';
+		r.pad = input.style.paddingLeft;
+		form.style.setProperty('--rzp-error', 'rgb(1, 2, 3)');
+		f.set('0812', 'TH');
+		f.check();
+		r.error = getComputedStyle(document.querySelector('.rzp-note')).color;
+		const wide = document.createElement('style');
+		wide.textContent = '.field.wide { padding-left: 30px; }';
+		document.head.append(wide);
+		input.classList.add('wide');
+		f.set('0812');
+		r.start = button.style.paddingLeft;
+		f.destroy();
+		r.gone = form.style.getPropertyValue('--rzp-button');
+		return r;
+	})()`);
+	expect('the sheet sits in the layer redz.phone', got.layer === true, got);
+	expect('--rzp-button on the holder and the root, the button width', got.holder === got.width && got.root === got.width, got);
+	expect('the input padding is the button width', got.pad === got.width, got);
+	expect('a variable on an ancestor reaches the field', got.error === 'rgb(1, 2, 3)', got);
+	expect('a padding the host changed is read again', got.start === '31px', got);
+	expect('destroy() takes --rzp-button away', got.gone === '', got);
+});
+
 test('window.REDZ of another REDZ script survives the bundle', async (p, expect) => {
 	const got = await p.ev(`(async () => {
 		const bundle = await (await fetch('/dist/redz.phone.min.js')).text();

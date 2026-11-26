@@ -13,7 +13,7 @@ REDZ_Phone_Parse($_POST['phone'], $_POST['phone_country'], ['MOBILE'])['e164']; 
 **Demo:** <https://redz-tech.github.io/REDZ.Phone/> (English, Русский, ไทย, עברית, 中文). In code: `REDZ.Phone` in the
 browser, functions `REDZ_Phone_*` in PHP.
 
-> **Status: 0.4.0, the engine and the field.** Offline checks only, no network. Coming next: an optional paid check
+> **Status: 0.4.1, the engine and the field.** Offline checks only, no network. Coming next: an optional paid check
 > that the number really works in the contact method the person chose (call, WhatsApp, Telegram). See `changelog.md`.
 
 ---
@@ -187,11 +187,37 @@ Russian, Thai, Hebrew and Chinese translations are in `docs/demo.js` (`FIELD`).
 
 ### Look
 
-The field inherits the font and colour of the page. Adjust it with these variables on `.rzp` or any ancestor:
-`--rzp-accent`, `--rzp-accent-soft`, `--rzp-border`, `--rzp-radius`, `--rzp-muted`, `--rzp-ok`, `--rzp-warn`,
-`--rzp-error`, `--rzp-menu-bg`, `--rzp-menu-text`, `--rzp-menu-active`, `--rzp-z`, and the icon colours
-`--rzp-call`, `--rzp-whatsapp`, `--rzp-telegram`, `--rzp-line`. Flags are 20×15; give `.rzp-flag` another size
-and the sprite follows.
+The field inherits the font and colour of the page. Its whole sheet sits in the cascade layer `redz.phone` and declares
+no order of its own: a host that layers its CSS names `redz.phone` (or `redz`) in its order where the field belongs,
+and a page without layers keeps the field's look.
+
+Adjust it with these variables on `.rzp` or any ancestor (each rule reads `var(--rzp-x, default)`, none is declared
+on the field itself): `--rzp-accent`, `--rzp-accent-soft`, `--rzp-focus` (the focus ring, `--rzp-accent` by default),
+`--rzp-border`, `--rzp-radius`, `--rzp-muted`, `--rzp-ok`, `--rzp-warn`, `--rzp-error`, `--rzp-menu-bg`,
+`--rzp-menu-text`, `--rzp-menu-active`, `--rzp-z`, and the icon colours `--rzp-call`, `--rzp-whatsapp`,
+`--rzp-telegram`, `--rzp-line`. Flags are 20×15; give `.rzp-flag` another size and the sprite follows.
+
+The field writes **`--rzp-button`**, the country button's width in px, on `.rzp` and on the element the input was in
+before the wrap (a floating-label wrapper, so its label can start after the button). It follows every change of the
+button (a country, a font, a resize) and is removed while the field is off and on `destroy()`. The input's padding is
+measured again each time, so a host may change it at run time.
+
+A label of the input stays where it was, outside `.rzp`. With `placeholder: false` the input keeps its own placeholder
+(a floating label needs one to tell an empty input).
+
+### The DOM
+
+The markup below is public: a host may style it, and changing any of it is a breaking change.
+
+| Part | Meaning |
+|---|---|
+| `.rzp` | the field, where the input was; `.rzp-inline` with `list: 'inline'`; `is-open` while the list is open, `is-off` without rules |
+| `.rzp-line` | the button and the input |
+| `.rzp-country` | the country button; `is-none` (no country), `is-blank` (no country and no code); inside: `.rzp-flag`, `.rzp-globe`, `.rzp-word`, `.rzp-code`, `.rzp-caret` |
+| `.rzp-list` | the country list; inside: `.rzp-search`, `.rzp-options` (`li`, `is-active` under the keys or the pointer, `rzp-last` closes the popular ones, `aria-selected` on the current; inside: `.rzp-name`, `.rzp-dial`), `.rzp-empty` |
+| `.rzp-note` | the line under the input; `is-ok`, `is-warn`, `is-error`; `.rzp-confirm` (the checkbox of `unallocated`) inside it |
+| `.rzp-methods` | the contact methods: `.rzp-methods-label`, `.rzp-radios` (`is-missing` when a required method is not chosen), `.rzp-method` (`.rzp-method-<method>`, `aria-checked`) |
+| the input | `aria-invalid` while an error shows |
 
 ## 4. The engine in the browser
 

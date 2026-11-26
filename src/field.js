@@ -71,8 +71,7 @@ export function field(input, options = {}) {
 
 	const saved = Object.fromEntries(SAVED.map((a) => [a, input.getAttribute(a)]));
 	const savedPad = [input.style.paddingLeft, input.style.paddingRight];
-	const cs = getComputedStyle(input);
-	const pad = [parseFloat(cs.paddingLeft) + parseFloat(cs.borderLeftWidth), parseFloat(cs.paddingRight) + parseFloat(cs.borderRightWidth)].map((v) => v || 0);
+	const holder = input.parentElement;
 
 	const root = el('div', o.list === 'inline' ? 'rzp rzp-inline' : 'rzp');
 	const line = el('div', 'rzp-line');
@@ -131,16 +130,29 @@ export function field(input, options = {}) {
 		host.htmlFor = input.id;
 	}
 
+	function width(px) {
+		for (const node of [root, holder]) {
+			if (px === null) {
+				node?.style.removeProperty('--rzp-button');
+			} else {
+				node?.style.setProperty('--rzp-button', `${px}px`);
+			}
+		}
+	}
+
 	function repad() {
 		const rtl = getComputedStyle(root).direction === 'rtl';
-		const side = rtl ? 1 : 0;
 		[input.style.paddingLeft, input.style.paddingRight] = savedPad;
 		if (st.off) {
+			width(null);
 			return;
 		}
+		const cs = getComputedStyle(input);
+		const start = rtl ? parseFloat(cs.paddingRight) + parseFloat(cs.borderRightWidth) : parseFloat(cs.paddingLeft) + parseFloat(cs.borderLeftWidth);
 		button.style.paddingLeft = button.style.paddingRight = '';
-		button.style[rtl ? 'paddingRight' : 'paddingLeft'] = `${pad[side]}px`;
+		button.style[rtl ? 'paddingRight' : 'paddingLeft'] = `${start || 0}px`;
 		input.style[rtl ? 'paddingRight' : 'paddingLeft'] = `${button.offsetWidth}px`;
+		width(button.offsetWidth);
 	}
 	const resize = typeof ResizeObserver === 'function' ? new ResizeObserver(repad) : null;
 	resize?.observe(button);
@@ -511,6 +523,7 @@ export function field(input, options = {}) {
 		root.remove();
 		SAVED.forEach((a) => (saved[a] === null ? input.removeAttribute(a) : input.setAttribute(a, saved[a])));
 		[input.style.paddingLeft, input.style.paddingRight] = savedPad;
+		width(null);
 		if (hostFor !== null) {
 			host.removeAttribute('for');
 			if (hostFor !== '') {

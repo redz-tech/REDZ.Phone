@@ -73,7 +73,12 @@ A field enters the answer only if both engines can produce it identically.
   removes the code; otherwise the typed code would flip the flag straight back.
 - **The country button overlays the start of the site's own input**, whose padding is widened by the button's
   width (measured, kept current by a ResizeObserver). This keeps any site's input styling; in RTL the button and
-  the padding go to the right while the input itself stays `dir="ltr"`.
+  the padding go to the right while the input itself stays `dir="ltr"`. The input's own padding is measured again in
+  every repad, after clearing ours (a host may change it at run time), and the width is published as `--rzp-button`
+  on `.rzp` and on the input's former parent, where a floating label can read it (REDZ.UI's binding, 0.4.1).
+- **A host themes the field, never the other way round** (REDZ.UI, 0.4.1): the sheet sits in `@layer redz.phone` and
+  declares no layer order; no `--rzp-*` is declared on `.rzp`, every rule reads `var(--rzp-x, default)`, so a value on
+  any ancestor wins. The class and state names in README «The DOM» are a contract: renaming one breaks a binding.
 - **`types` defaults to `['MOBILE']`** in the field (a contact number), not in `parse()`.
 - **`valid` fails open:** without rules the field never blocks a form; the server checks anyway.
 - **Search** folds case and marks (NFD, `\p{M}` removed) on both sides, so `ё` finds `е` and `cote` finds `Côte`;
