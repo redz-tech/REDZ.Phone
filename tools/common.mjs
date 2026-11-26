@@ -49,9 +49,9 @@ export function bundleOptions(minify) {
 }
 
 // dist/redz.phone.css: src/redz.phone.css minified, image URLs untouched (the sprites sit next to it)
-export async function buildCss(esbuild) {
+export async function buildCss(esbuild, name = 'redz.phone.css') {
 	const pkg = readJson(path.join(ROOT, 'package.json'));
-	const source = fs.readFileSync(path.join(ROOT, 'src', 'redz.phone.css'), 'utf8');
+	const source = fs.readFileSync(path.join(ROOT, 'src', name), 'utf8');
 	const {code} = await esbuild.transform(source, {loader: 'css', minify: true, charset: 'utf8', banner: `/*! REDZ.Phone ${pkg.version} | MIT | flags: flag-icons (MIT) | see NOTICE */`});
 	return code;
 }

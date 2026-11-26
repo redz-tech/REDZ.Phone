@@ -585,6 +585,43 @@ test('a host themes it: its layer, ancestor variables, --rzp-button on the holde
 	expect('destroy() takes --rzp-button away', got.gone === '', got);
 });
 
+test('on a REDZ.UI page: its sheet maps the tokens, floats the label after the button, segments the methods, classes the tick', async (p, expect) => {
+	const got = await p.ev(`(async () => {
+		const link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.href = '../dist/redz.phone.redz-ui.css';
+		await new Promise((done) => { link.onload = done; document.head.append(link); });
+		document.documentElement.style.cssText = '--redz-danger-text: rgb(9, 8, 7); --redz-primary: rgb(1, 2, 3); --redz-primary-contrast: rgb(250, 250, 250); --redz-radius-12: 12px';
+		const stage = document.getElementById('stage');
+		stage.replaceChildren();
+		const box = document.createElement('div');
+		box.className = 'form-floating';
+		const input = document.createElement('input');
+		input.className = 'form-control field';
+		input.id = 'phone';
+		const label = document.createElement('label');
+		label.htmlFor = 'phone';
+		label.textContent = 'Phone';
+		box.append(input, label);
+		stage.append(box);
+		window.f = REDZ.Phone.field(input, {country: 'IL', methods: ['call', 'whatsapp'], method: 'call', tickClass: 'check'});
+		await REDZ.Phone.load();
+		f.set('050-123-4567', 'IL');
+		f.check();
+		const css = (el, prop) => getComputedStyle(el).getPropertyValue(prop).trim();
+		const method = document.querySelector('.rzp-method[aria-checked="true"]');
+		return {start: css(box, '--redz-float-start'), button: css(box, '--rzp-button'), labelLast: box.lastElementChild === label,
+			warn: document.querySelector('.rzp-note').className, tick: document.querySelector('.rzp-confirm input')?.className ?? null,
+			wrap: css(document.querySelector('.rzp-radios'), 'flex-wrap'), chosen: css(method, 'background-color'), chosenText: css(method, 'color'),
+			radius: css(document.querySelector('.rzp-list'), 'border-top-left-radius')};
+	})()`);
+	expect('the label starts where the number does', got.start !== '' && got.start === got.button, got);
+	expect('the label stays the last child of the floating field', got.labelLast === true, got);
+	expect('the tick takes the host class', got.warn.includes('is-warn') && got.tick === 'check', got);
+	expect('the methods are one row, the chosen one on the primary colour', got.wrap === 'nowrap' && got.chosen === 'rgb(1, 2, 3)' && got.chosenText === 'rgb(250, 250, 250)', got);
+	expect('the list takes the host radius', got.radius === '12px', got);
+});
+
 test('window.REDZ of another REDZ script survives the bundle', async (p, expect) => {
 	const got = await p.ev(`(async () => {
 		const bundle = await (await fetch('/dist/redz.phone.min.js')).text();

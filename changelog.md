@@ -3,6 +3,14 @@
 All notable changes to **REDZ.Phone**. Versions are its own and independent of any host application.
 Listed newest → oldest.
 
+## 0.5.0 - The field on a REDZ.UI page
+- **`dist/redz.phone.redz-ui.css`** (written with the REDZ.UI session, the owner's pick 26.11): linked after
+  `redz.phone.css` on a page of REDZ.UI 0.37.0 or newer, in the layer `redz.phone-ui`. The variables come from REDZ.UI's
+  tokens, so light and dark follow. The country list is a REDZ.UI menu, the note is REDZ.UI's hint and feedback, and the
+  contact methods are its segmented choice. In a `.form-floating` the label starts after the country button
+  (`--redz-float-start` from `--rzp-button`).
+- **Option `tickClass`:** a class for the checkbox of `unallocated`, so a host's own checkbox look applies (`check`).
+
 ## 0.4.1 - A host can theme the field
 - **The sheet sits in the cascade layer `redz.phone`** and declares no order: a host that layers its CSS (REDZ.UI) places
   it where the field belongs; a page without layers sees no change.

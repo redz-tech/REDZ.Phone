@@ -11,8 +11,10 @@ for (const minify of [false, true]) {
 	await esbuild.build(options);
 	console.log(`built ${path.relative(ROOT, options.outfile)}`);
 }
-fs.writeFileSync(path.join(ROOT, 'dist', 'redz.phone.css'), await buildCss(esbuild));
-console.log('built dist/redz.phone.css');
+for (const name of ['redz.phone.css', 'redz.phone.redz-ui.css']) {
+	fs.writeFileSync(path.join(ROOT, 'dist', name), await buildCss(esbuild, name));
+	console.log(`built dist/${name}`);
+}
 
 const docs = path.join(ROOT, 'docs', 'redz.phone');
 fs.rmSync(docs, {recursive: true, force: true});

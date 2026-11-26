@@ -45,7 +45,7 @@ export function field(input, options = {}) {
 	if (fields.has(input)) {
 		return fields.get(input);
 	}
-	const o = {country: 'auto', popular: [], types: ['MOBILE'], methods: [], method: '', methodRequired: false, lang: '', texts: {}, list: 'float', hidden: {}, placeholder: true, meta: undefined, ...options};
+	const o = {country: 'auto', popular: [], types: ['MOBILE'], methods: [], method: '', methodRequired: false, lang: '', texts: {}, list: 'float', hidden: {}, placeholder: true, meta: undefined, tickClass: '', ...options};
 	const t = {...TEXTS, ...o.texts};
 	const id = `rzp${++serial}`;
 	const lang = o.lang || input.closest('[lang]')?.lang || navigator.language || 'en';
@@ -86,7 +86,7 @@ export function field(input, options = {}) {
 	panel.append(search, listbox, empty);
 	const note = el('div', 'rzp-note', {id: `${id}-note`, 'aria-live': 'polite'});
 	const confirm = el('label', 'rzp-confirm');
-	const tick = el('input', '', {type: 'checkbox'});
+	const tick = el('input', o.tickClass, {type: 'checkbox'});
 	confirm.append(tick, el('span', '', {}, t.confirm));
 
 	input.before(root);

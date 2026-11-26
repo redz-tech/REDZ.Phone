@@ -13,7 +13,7 @@ REDZ_Phone_Parse($_POST['phone'], $_POST['phone_country'], ['MOBILE'])['e164']; 
 **Demo:** <https://redz-tech.github.io/REDZ.Phone/> (English, Русский, ไทย, עברית, 中文). In code: `REDZ.Phone` in the
 browser, functions `REDZ_Phone_*` in PHP.
 
-> **Status: 0.4.1, the engine and the field.** Offline checks only, no network. Coming next: an optional paid check
+> **Status: 0.5.0, the engine and the field.** Offline checks only, no network. Coming next: an optional paid check
 > that the number really works in the contact method the person chose (call, WhatsApp, Telegram). See `changelog.md`.
 
 ---
@@ -54,6 +54,7 @@ on every build that they answer alike (§8).
 |---|---|
 | `dist/redz.phone.min.js`, `dist/redz.phone.js` | engine and field: one global, `REDZ.Phone` (19 KB gzipped) |
 | `dist/redz.phone.css` | the field's styles (1.5 KB gzipped) |
+| `dist/redz.phone.redz-ui.css` | the field on a REDZ.UI page (REDZ.UI 0.37.0 or newer), linked after `redz.phone.css` |
 | `dist/flags.png`, `dist/flags@2x.png` | flag sprite, 18 KB and 42 KB; keep them next to `redz.phone.css` |
 | `dist/meta/v9.0.41.json` | Google's rules for the browser, loaded on demand (41 KB gzipped) |
 | `php/redz.phone.php` | PHP engine: functions `REDZ_Phone_*` |
@@ -136,6 +137,7 @@ number while it is typed (input masks break pasting).
 | `hidden` | `{}` | hidden inputs to keep filled, by name: `{e164: 'phone_e164', country: 'phone_country', method: 'contact'}` |
 | `placeholder` | `true` | the country's example number as the input's placeholder |
 | `meta` | `meta/<release>.json` next to the script | URL of the rules file |
+| `tickClass` | `''` | a class for the checkbox of `unallocated` (a host's own checkbox look, `check` on REDZ.UI) |
 
 ### What you get
 
@@ -201,6 +203,12 @@ The field writes **`--rzp-button`**, the country button's width in px, on `.rzp`
 before the wrap (a floating-label wrapper, so its label can start after the button). It follows every change of the
 button (a country, a font, a resize) and is removed while the field is off and on `destroy()`. The input's padding is
 measured again each time, so a host may change it at run time.
+
+**On a REDZ.UI page** (REDZ.UI 0.37.0 or newer) link `redz.phone.redz-ui.css` after `redz.phone.css` and pass
+`tickClass: 'check'`. In layer `redz.phone-ui`, it takes the variables from REDZ.UI's tokens, so both themes follow. It
+also draws the country list as a REDZ.UI menu, the line under the input as its hint and feedback, and the contact methods
+as its segmented choice. In a `.form-floating` it tells REDZ.UI where the number starts (`--redz-float-start` from
+`--rzp-button`), so the label floats after the country button. REDZ.UI floats a control a widget wrapped by itself.
 
 A label of the input stays where it was, outside `.rzp`. With `placeholder: false` the input keeps its own placeholder
 (a floating label needs one to tell an empty input).

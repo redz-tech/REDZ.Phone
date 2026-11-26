@@ -252,8 +252,10 @@ for (const minify of [false, true]) {
 		problems.push(`${path.relative(ROOT, options.outfile)} is stale (run npm run build)`);
 	}
 }
-if (readOrNull(path.join(ROOT, 'dist', 'redz.phone.css'))?.toString('utf8') !== await buildCss(esbuild)) {
-	problems.push('dist/redz.phone.css is stale (run npm run build)');
+for (const name of ['redz.phone.css', 'redz.phone.redz-ui.css']) {
+	if (readOrNull(path.join(ROOT, 'dist', name))?.toString('utf8') !== await buildCss(esbuild, name)) {
+		problems.push(`dist/${name} is stale (run npm run build)`);
+	}
 }
 problems.push(...flagProblems(png, png2x, meta), ...docsProblems(docsPairs));
 const {unexpected, expected, stale} = splitKnown(diff, known);
