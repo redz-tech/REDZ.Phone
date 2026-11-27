@@ -1,4 +1,4 @@
-/*! REDZ.Phone 0.5.0 | MIT | metadata: Google libphonenumber v9.0.41 (Apache-2.0) | engine: libphonenumber-js (MIT) | icons: Bootstrap Icons (MIT), Simple Icons (CC0) | see NOTICE */
+/*! REDZ.Phone 0.5.1 | MIT | metadata: Google libphonenumber v9.0.41 (Apache-2.0) | engine: libphonenumber-js (MIT) | icons: Bootstrap Icons (MIT), Simple Icons (CC0) | see NOTICE */
 var REDZ = REDZ || {};
 REDZ.Phone = (() => {
   var __defProp = Object.defineProperty;
@@ -2283,7 +2283,7 @@ REDZ.Phone = (() => {
   var TYPES = ["FIXED_LINE", "MOBILE", "FIXED_LINE_OR_MOBILE", "TOLL_FREE", "PREMIUM_RATE", "SHARED_COST", "VOIP", "PERSONAL_NUMBER", "PAGER", "UAN", "VOICEMAIL"];
   var DIGIT_ZEROS = [48, 1632, 1776, 1984, 2406, 2534, 2662, 2790, 2918, 3046, 3174, 3302, 3430, 3558, 3664, 3792, 3872, 4160, 4240, 6112, 6160, 6470, 6608, 6784, 6800, 6992, 7088, 7232, 7248, 42528, 43216, 43264, 43472, 43504, 43600, 44016, 65296, 66720, 68912, 68928, 69734, 69872, 69942, 70096, 70384, 70736, 70864, 71248, 71360, 71376, 71386, 71472, 71904, 72016, 72688, 72784, 73040, 73120, 73184, 73552, 90416, 92768, 92864, 93008, 93552, 118e3, 120782, 120792, 120802, 120812, 120822, 123200, 123632, 124144, 124401, 125264, 130032];
   var SCRIPT = typeof document !== "undefined" && document.currentScript ? document.currentScript.src : "";
-  var version = "0.5.0";
+  var version = "0.5.1";
   var google = "v9.0.41";
   var meta = null;
   var loading = null;
@@ -2547,6 +2547,7 @@ REDZ.Phone = (() => {
       result: null,
       valid: false,
       note: "",
+      look: "",
       open: false,
       items: null,
       visible: [],
@@ -2609,11 +2610,15 @@ REDZ.Phone = (() => {
       host.htmlFor = input.id;
     }
     function width(px) {
+      const want = px === null ? "" : `${px}px`;
       for (const node of [root, holder]) {
+        if (!node || node.style.getPropertyValue("--rzp-button") === want) {
+          continue;
+        }
         if (px === null) {
-          node == null ? void 0 : node.style.removeProperty("--rzp-button");
+          node.style.removeProperty("--rzp-button");
         } else {
-          node == null ? void 0 : node.style.setProperty("--rzp-button", `${px}px`);
+          node.style.setProperty("--rzp-button", want);
         }
       }
     }
@@ -2626,9 +2631,12 @@ REDZ.Phone = (() => {
       }
       const cs = getComputedStyle(input);
       const start = rtl ? parseFloat(cs.paddingRight) + parseFloat(cs.borderRightWidth) : parseFloat(cs.paddingLeft) + parseFloat(cs.borderLeftWidth);
-      button.style.paddingLeft = button.style.paddingRight = "";
-      button.style[rtl ? "paddingRight" : "paddingLeft"] = `${start || 0}px`;
-      input.style[rtl ? "paddingRight" : "paddingLeft"] = `${button.offsetWidth}px`;
+      const [side, other] = rtl ? ["paddingRight", "paddingLeft"] : ["paddingLeft", "paddingRight"];
+      if (button.style[side] !== `${start || 0}px` || button.style[other] !== "") {
+        button.style[other] = "";
+        button.style[side] = `${start || 0}px`;
+      }
+      input.style[side] = `${button.offsetWidth}px`;
       width(button.offsetWidth);
     }
     const resize = typeof ResizeObserver === "function" ? new ResizeObserver(repad) : null;
@@ -2694,13 +2702,17 @@ REDZ.Phone = (() => {
       var _a2;
       root.classList.toggle("is-off", st.off);
       const s = shown();
-      paint(flag, s.iso);
-      button.classList.toggle("is-none", s.iso === NONE);
-      button.classList.toggle("is-blank", s.iso === NONE && !s.code);
-      dial.textContent = s.code ? `+${s.code}` : "";
-      button.setAttribute("aria-label", s.iso !== NONE ? `${t.country}: ${nameOf(s.iso)}${s.code ? ` +${s.code}` : ""}` : s.code ? `+${s.code}` : t.choose);
+      const look = `${st.off}|${s.iso}|${s.code}`;
+      if (look !== st.look) {
+        st.look = look;
+        paint(flag, s.iso);
+        button.classList.toggle("is-none", s.iso === NONE);
+        button.classList.toggle("is-blank", s.iso === NONE && !s.code);
+        setText(dial, s.code ? `+${s.code}` : "");
+        setAttr(button, "aria-label", s.iso !== NONE ? `${t.country}: ${nameOf(s.iso)}${s.code ? ` +${s.code}` : ""}` : s.code ? `+${s.code}` : t.choose);
+      }
       if (o.placeholder && ready() && !st.off) {
-        input.placeholder = sampleOf(st.country);
+        setAttr(input, "placeholder", sampleOf(st.country));
       }
       const a = assess();
       st.valid = a.valid;
@@ -2716,25 +2728,24 @@ REDZ.Phone = (() => {
         }
       }
       if (a.show && a.kind === "error") {
-        input.setAttribute("aria-invalid", "true");
-      } else if (saved["aria-invalid"] === null) {
+        setAttr(input, "aria-invalid", "true");
+      } else if (saved["aria-invalid"] === null && input.hasAttribute("aria-invalid")) {
         input.removeAttribute("aria-invalid");
       }
       input.setCustomValidity(a.valid ? "" : text || t.empty);
       radios.forEach((b, i) => {
         const on2 = b.dataset.method === st.method;
-        b.setAttribute("aria-checked", String(on2));
-        b.tabIndex = on2 || st.method === "" && i === 0 ? 0 : -1;
+        setAttr(b, "aria-checked", String(on2));
+        const tab = on2 || st.method === "" && i === 0 ? 0 : -1;
+        if (b.tabIndex !== tab) {
+          b.tabIndex = tab;
+        }
       });
       group.classList.toggle("is-missing", !methodOk() && st.revealed);
-      if (hidden.e164) {
-        hidden.e164.value = ((_a2 = st.result) == null ? void 0 : _a2.ok) ? st.result.e164 : "";
-      }
-      if (hidden.country) {
-        hidden.country.value = st.country;
-      }
-      if (hidden.method) {
-        hidden.method.value = st.method;
+      for (const [field2, value] of [[hidden.e164, ((_a2 = st.result) == null ? void 0 : _a2.ok) ? st.result.e164 : ""], [hidden.country, st.country], [hidden.method, st.method]]) {
+        if (field2 && field2.value !== value) {
+          field2.value = value;
+        }
       }
       repad();
     }
@@ -3089,6 +3100,16 @@ REDZ.Phone = (() => {
   function paint(node, iso) {
     const i = FLAGS.includes(iso) ? FLAGS.indexOf(iso) : FLAGS.length - 1;
     node.style.backgroundPosition = `0 ${i / (FLAGS.length - 1) * 100}%`;
+  }
+  function setText(node, text) {
+    if (node.textContent !== text) {
+      node.textContent = text;
+    }
+  }
+  function setAttr(node, name, value) {
+    if (node.getAttribute(name) !== value) {
+      node.setAttribute(name, value);
+    }
   }
   function pickable(iso) {
     const up = String(iso != null ? iso : "").trim().toUpperCase();

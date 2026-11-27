@@ -3,6 +3,14 @@
 All notable changes to **REDZ.Phone**. Versions are its own and independent of any host application.
 Listed newest → oldest.
 
+## 0.5.1 - The country button opens on the first press in Safari
+- **A redraw writes only what changed.** Leaving the input redrew the country button with the same content: the text
+  of `.rzp-code` was set again, which replaces its text node, and the label and padding were written again. Safari
+  (WebKit) fires no click when the node pressed is replaced in that mousedown, so a person who had typed a number had to
+  press the button twice to open the list. Now the flag, the code, the label, the button's padding, the placeholder, the
+  method buttons and the hidden inputs are written only when their value changes. Found by the tourism session in a
+  booking walk.
+
 ## 0.5.0 - The field on a REDZ.UI page
 - **`dist/redz.phone.redz-ui.css`** (written with the REDZ.UI session, the owner's pick 26.11): linked after
   `redz.phone.css` on a page of REDZ.UI 0.37.0 or newer, in the layer `redz.phone-ui`. The variables come from REDZ.UI's

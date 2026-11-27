@@ -62,6 +62,7 @@ export function field(input, options = {}) {
 		result: null,
 		valid: false,
 		note: '',
+		look: '',
 		open: false,
 		items: null,
 		visible: [],
@@ -131,11 +132,15 @@ export function field(input, options = {}) {
 	}
 
 	function width(px) {
+		const want = px === null ? '' : `${px}px`;
 		for (const node of [root, holder]) {
+			if (!node || node.style.getPropertyValue('--rzp-button') === want) {
+				continue;
+			}
 			if (px === null) {
-				node?.style.removeProperty('--rzp-button');
+				node.style.removeProperty('--rzp-button');
 			} else {
-				node?.style.setProperty('--rzp-button', `${px}px`);
+				node.style.setProperty('--rzp-button', want);
 			}
 		}
 	}
@@ -149,9 +154,12 @@ export function field(input, options = {}) {
 		}
 		const cs = getComputedStyle(input);
 		const start = rtl ? parseFloat(cs.paddingRight) + parseFloat(cs.borderRightWidth) : parseFloat(cs.paddingLeft) + parseFloat(cs.borderLeftWidth);
-		button.style.paddingLeft = button.style.paddingRight = '';
-		button.style[rtl ? 'paddingRight' : 'paddingLeft'] = `${start || 0}px`;
-		input.style[rtl ? 'paddingRight' : 'paddingLeft'] = `${button.offsetWidth}px`;
+		const [side, other] = rtl ? ['paddingRight', 'paddingLeft'] : ['paddingLeft', 'paddingRight'];
+		if (button.style[side] !== `${start || 0}px` || button.style[other] !== '') {
+			button.style[other] = '';
+			button.style[side] = `${start || 0}px`;
+		}
+		input.style[side] = `${button.offsetWidth}px`;
 		width(button.offsetWidth);
 	}
 	const resize = typeof ResizeObserver === 'function' ? new ResizeObserver(repad) : null;
@@ -221,16 +229,21 @@ export function field(input, options = {}) {
 		return {valid: false, kind: 'error', show: st.revealed || key === 'too_long', nodes};
 	}
 
+	// A redraw writes only what changed: WebKit fires no click when the node pressed is replaced (focus leaves the input in that mousedown).
 	function render() {
 		root.classList.toggle('is-off', st.off);
 		const s = shown();
-		paint(flag, s.iso);
-		button.classList.toggle('is-none', s.iso === NONE);
-		button.classList.toggle('is-blank', s.iso === NONE && !s.code);
-		dial.textContent = s.code ? `+${s.code}` : '';
-		button.setAttribute('aria-label', s.iso !== NONE ? `${t.country}: ${nameOf(s.iso)}${s.code ? ` +${s.code}` : ''}` : (s.code ? `+${s.code}` : t.choose));
+		const look = `${st.off}|${s.iso}|${s.code}`;
+		if (look !== st.look) {
+			st.look = look;
+			paint(flag, s.iso);
+			button.classList.toggle('is-none', s.iso === NONE);
+			button.classList.toggle('is-blank', s.iso === NONE && !s.code);
+			setText(dial, s.code ? `+${s.code}` : '');
+			setAttr(button, 'aria-label', s.iso !== NONE ? `${t.country}: ${nameOf(s.iso)}${s.code ? ` +${s.code}` : ''}` : (s.code ? `+${s.code}` : t.choose));
+		}
 		if (o.placeholder && ready() && !st.off) {
-			input.placeholder = sampleOf(st.country);
+			setAttr(input, 'placeholder', sampleOf(st.country));
 		}
 		const a = assess();
 		st.valid = a.valid;
@@ -246,25 +259,24 @@ export function field(input, options = {}) {
 			}
 		}
 		if (a.show && a.kind === 'error') {
-			input.setAttribute('aria-invalid', 'true');
-		} else if (saved['aria-invalid'] === null) {
+			setAttr(input, 'aria-invalid', 'true');
+		} else if (saved['aria-invalid'] === null && input.hasAttribute('aria-invalid')) {
 			input.removeAttribute('aria-invalid');
 		}
 		input.setCustomValidity(a.valid ? '' : (text || t.empty));
 		radios.forEach((b, i) => {
 			const on = b.dataset.method === st.method;
-			b.setAttribute('aria-checked', String(on));
-			b.tabIndex = on || (st.method === '' && i === 0) ? 0 : -1;
+			setAttr(b, 'aria-checked', String(on));
+			const tab = on || (st.method === '' && i === 0) ? 0 : -1;
+			if (b.tabIndex !== tab) {
+				b.tabIndex = tab;
+			}
 		});
 		group.classList.toggle('is-missing', !methodOk() && st.revealed);
-		if (hidden.e164) {
-			hidden.e164.value = st.result?.ok ? st.result.e164 : '';
-		}
-		if (hidden.country) {
-			hidden.country.value = st.country;
-		}
-		if (hidden.method) {
-			hidden.method.value = st.method;
+		for (const [field, value] of [[hidden.e164, st.result?.ok ? st.result.e164 : ''], [hidden.country, st.country], [hidden.method, st.method]]) {
+			if (field && field.value !== value) {
+				field.value = value;
+			}
 		}
 		repad();
 	}
@@ -637,6 +649,18 @@ function fill(text, values = {}) {
 function paint(node, iso) {
 	const i = FLAGS.includes(iso) ? FLAGS.indexOf(iso) : FLAGS.length - 1;
 	node.style.backgroundPosition = `0 ${(i / (FLAGS.length - 1)) * 100}%`;
+}
+
+function setText(node, text) {
+	if (node.textContent !== text) {
+		node.textContent = text;
+	}
+}
+
+function setAttr(node, name, value) {
+	if (node.getAttribute(name) !== value) {
+		node.setAttribute(name, value);
+	}
 }
 
 function pickable(iso) {

@@ -305,6 +305,34 @@ test('an unfinished number is told off only after leaving the field', async (p, 
 	expect('too short after blur', note.cls.includes('is-error') && note.text.includes('Too short for Thailand'), note);
 });
 
+test('leaving the field redraws nothing in the country button (WebKit drops the click when a pressed node is replaced)', async (p, expect) => {
+	await p.mount({country: 'TH'});
+	await p.focus('#phone');
+	await p.type('081 234 56');
+	const watch = `(() => {
+		window.muts = [];
+		window.mo?.disconnect();
+		window.mo = new MutationObserver((r) => window.muts.push(...r.map((m) => m.type + ':' + (m.attributeName ?? m.target.nodeName))));
+		window.mo.observe(document.querySelector('.rzp-country'), {subtree: true, childList: true, attributes: true, characterData: true});
+		return true;
+	})()`;
+	await p.ev(watch);
+	await p.ev(`document.getElementById('phone').blur()`);
+	await p.ev('new Promise((r) => setTimeout(r, 50))');
+	const blurred = await p.ev('window.muts');
+	expect('the blur shows the note', (await p.note()).text.includes('Too short for Thailand'), await p.note());
+	expect('and writes nothing into the button', blurred.length === 0, blurred);
+	await p.focus('#phone');
+	await p.type('7');
+	await p.ev(watch);
+	await p.ev(`f.set('+44 7400 123456')`);
+	const moved = await p.ev('window.muts');
+	expect('a new country does redraw it', moved.some((m) => m.startsWith('childList') || m.startsWith('characterData')) && moved.includes('attributes:aria-label'), moved);
+	await p.ev(watch);
+	await p.click('.rzp-country');
+	expect('the list opens on the first press', await p.attr('.rzp-country', 'aria-expanded') === 'true');
+});
+
 test('keyboard: open, search, choose, escape, type-ahead', async (p, expect) => {
 	await p.mount({country: 'GB'});
 	await p.focus('.rzp-country');
