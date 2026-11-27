@@ -106,6 +106,11 @@ that (it showed IR, NG, US). Verified on 20.10.2026 with seven broken copies of 
 reason, and the healthy copy green.
 
 ## Traps
+- **A redraw never rewrites a part with its own value** (0.5.1). `render()` runs on every input, blur and
+  `invalid`; setting `textContent` replaces the text node even when the text is the same, and Safari (WebKit) fires
+  no click when the node pressed is replaced in that mousedown (focus leaves the input there). Write through
+  `setText` / `setAttr` or a compare; the uitest «leaving the field redraws nothing in the country button» watches
+  the button with a MutationObserver.
 - **`window.REDZ` is shared** (the REDZ CMS puts its `REDZ.post` there). The bundle extends it
   (`var REDZ = REDZ || {}`); a script that replaces the object or declares `REDZ` with `let`/`const` loses
   `REDZ.Phone` or breaks the page. The uitest proves the bundle keeps another script's `REDZ`.
